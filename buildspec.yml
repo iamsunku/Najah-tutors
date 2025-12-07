@@ -1,0 +1,19 @@
+version: 0.1
+
+phases:
+  install:
+    commands:
+      - echo "Installing dependencies"
+      - npm install
+  build:
+    commands:
+      - echo "Running build (if any)"
+      # - npm run build   # Uncomment if you have a build step
+  post_build:
+    commands:
+      - echo "Zipping artifacts for Elastic Beanstalk"
+      - zip -r app.zip ./
+
+artifacts:
+  files:
+    - app.zip
