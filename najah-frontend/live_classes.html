@@ -6,6 +6,8 @@
     <title>Live Online Classes - Najah Tutors</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
         
@@ -1011,6 +1013,7 @@
                 <p class="text-xl text-gray-600">Fill in your details to enroll in the course</p>
             </div>
             <form id="enrollmentForm" class="bg-gradient-to-br from-purple-50 to-pink-50 p-8 md:p-12 rounded-3xl shadow-2xl scroll-animate">
+                <div id="enrollmentErrors" class="mb-6 hidden bg-red-50 border border-red-200 text-red-700 rounded-xl p-4"></div>
                 <div class="mb-6">
                     <h3 class="text-xl font-bold text-gray-900 mb-4">Selected Subjects</h3>
                     <div id="selectedSubjects" class="bg-white p-4 rounded-lg mb-4">
@@ -1158,6 +1161,31 @@
             ? '/api'
             : 'http://localhost:5000/api';
 
+        // Toast helper
+        function showToast(message, type = 'info') {
+            const colors = {
+                success: '#16a34a',
+                error: '#dc2626',
+                warning: '#d97706',
+                info: '#2563eb'
+            };
+            Toastify({
+                text: message,
+                duration: 4000,
+                close: true,
+                gravity: 'top',
+                position: 'right',
+                stopOnFocus: true,
+                style: {
+                    background: colors[type] || colors.info,
+                    color: '#fff'
+                }
+            }).showToast();
+        }
+
+        // Redirect any stray alerts to Toastify
+        window.alert = (msg) => showToast(msg, 'info');
+
         // Mobile Menu Toggle
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -1222,6 +1250,8 @@
             if (selectedSubjects.length === 0) {
                 selectedDiv.innerHTML = '<p class="text-gray-600">No subjects selected yet</p>';
                 totalAmountSpan.textContent = '₹0';
+                document.getElementById('selectedClass').value = '';
+                document.getElementById('selectedBoard').value = '';
                 return;
             }
 
@@ -1247,6 +1277,48 @@
             }
         }
 
+        function showEnrollmentErrors(errors) {
+            const errorBox = document.getElementById('enrollmentErrors');
+            if (!errorBox) return;
+
+            if (!errors.length) {
+                errorBox.classList.add('hidden');
+                errorBox.innerHTML = '';
+                return;
+            }
+
+            errorBox.innerHTML = `<ul class="list-disc pl-5 space-y-1">${errors.map(err => `<li>${err}</li>`).join('')}</ul>`;
+            errorBox.classList.remove('hidden');
+        }
+
+        function validateEnrollmentForm(data) {
+            const errors = [];
+            const phonePattern = /^\d{10}$/;
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!data.studentName || data.studentName.trim().length < 2) {
+                errors.push('Please enter a valid student name.');
+            }
+
+            if (!data.phone || !phonePattern.test(data.phone.trim())) {
+                errors.push('Please enter a valid 10-digit phone number.');
+            }
+
+            if (!data.email || !emailPattern.test(data.email.trim())) {
+                errors.push('Please enter a valid email address.');
+            }
+
+            if (!data.class || !data.board) {
+                errors.push('Please select at least one subject to set class and board.');
+            }
+
+            if (!selectedSubjects.length || data.totalAmount <= 0) {
+                errors.push('Please choose at least one subject before submitting.');
+            }
+
+            return errors;
+        }
+
         function resetSelections() {
             // Uncheck all checkboxes
             document.querySelectorAll('.subject-select').forEach(cb => {
@@ -1254,15 +1326,17 @@
             });
             selectedSubjects = [];
             updateSelectionDisplay();
+            showEnrollmentErrors([]);
         }
 
         // Open Enroll Form
         function openEnrollForm() {
             if (selectedSubjects.length === 0) {
-                alert('Please select at least one subject before enrolling!');
+                showToast('Please select at least one subject before enrolling!', 'warning');
                 return;
             }
 
+            showEnrollmentErrors([]);
             const registerSection = document.getElementById('register');
             registerSection.classList.remove('hidden');
             
@@ -1274,6 +1348,7 @@
         function closeEnrollForm() {
             const registerSection = document.getElementById('register');
             registerSection.classList.add('hidden');
+            showEnrollmentErrors([]);
             
             // Scroll back to courses
             document.getElementById('courses').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1289,7 +1364,7 @@
                     const registerSection = document.getElementById('register');
                     if (registerSection.classList.contains('hidden')) {
                         e.preventDefault();
-                        alert('Please select subjects and click "Enroll Now" button to register.');
+                        showToast('Please select subjects and click "Enroll Now" to register.', 'info');
                         return;
                     }
                 }
@@ -1371,15 +1446,22 @@
             // Get form data
             const formData = new FormData(e.target);
             const data = {
-                studentName: formData.get('studentName'),
-                phone: formData.get('phone'),
-                email: formData.get('email'),
+                studentName: (formData.get('studentName') || '').trim(),
+                phone: (formData.get('phone') || '').trim(),
+                email: (formData.get('email') || '').trim(),
                 class: document.getElementById('selectedClass').value,
                 board: document.getElementById('selectedBoard').value,
-                schoolName: formData.get('schoolName'),
+                schoolName: (formData.get('schoolName') || '').trim(),
                 subjects: selectedSubjects,
                 totalAmount: selectedSubjects.reduce((sum, s) => sum + s.price, 0)
             };
+
+            const validationErrors = validateEnrollmentForm(data);
+            if (validationErrors.length) {
+                showEnrollmentErrors(validationErrors);
+                return;
+            }
+            showEnrollmentErrors([]);
 
             try {
                 const response = await fetch('http://localhost:5000/api/public/enroll', {
@@ -1396,16 +1478,14 @@
                     throw new Error(result.message || 'Failed to submit enrollment');
                 }
             
-                alert('Thank you for registering! Your enrollment has been received.\n\nSelected Subjects: ' +
-                  selectedSubjects.map(s => s.subject).join(', ') + 
-                  '\nTotal Amount: ₹' + data.totalAmount.toLocaleString());
+                showToast('Enrollment submitted successfully!', 'success');
             
             // Reset form
             e.target.reset();
             closeEnrollForm();
             resetSelections();
             } catch (error) {
-                alert('Sorry, there was a problem submitting your enrollment. Please try again.');
+                showToast('Sorry, there was a problem submitting your enrollment. Please try again.', 'error');
             }
         });
 

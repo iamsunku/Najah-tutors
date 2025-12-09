@@ -1,6 +1,8 @@
 const LiveClass = require('../models/LiveClass');
 const Course = require('../models/Course');
 const User = require('../models/User');
+const Enrollment = require('../models/Enrollment');
+const MarketingEnrollment = require('../models/MarketingEnrollment');
 const { sendBulkClassNotifications, sendClassCancellationNotification } = require('../utils/notificationService');
 
 // @desc    Get all live classes
@@ -73,40 +75,79 @@ exports.createLiveClass = async (req, res, next) => {
       .populate('teacher', 'name email')
       .populate('enrolledStudents', 'name email phone pushSubscription notificationPreferences');
 
-    // Send notifications to ALL enrolled students (students who have enrolled in any subject)
+    // Send notifications to enrolled students only
     try {
-      // Get all active students who have enrolled in any subject
-      const allStudents = await User.find({ 
-        role: 'student', 
-        isActive: true 
-      }).select('name email phone pushSubscription notificationPreferences board class');
+      // Get all enrollments (active and pending status)
+      const enrollments = await Enrollment.find({
+        status: { $in: ['active', 'pending'] }
+      }).select('student');
 
-      // Filter students based on notification preferences
-      // Notify ALL enrolled students (who have enrolled in any subject) regardless of board/class
-      const studentsToNotify = allStudents.filter(student => {
-        // Check if student has at least one notification channel enabled
-        // Default to true if preferences not set (to ensure all students get notified)
-        if (!student.notificationPreferences) {
-          return true; // No preferences set, send notifications
+      // Get all marketing enrollments (all are considered enrolled)
+      const marketingEnrollments = await MarketingEnrollment.find().select('email');
+
+      // Get unique student IDs from regular enrollments
+      const enrolledStudentIds = [...new Set(enrollments.map(enrollment => enrollment.student.toString()))];
+
+      // Get unique emails from marketing enrollments
+      const marketingEnrollmentEmails = [...new Set(marketingEnrollments.map(me => me.email.toLowerCase()))];
+
+      // Get students from both sources
+      const enrolledStudentsFromEnrollments = enrolledStudentIds.length > 0 
+        ? await User.find({
+            _id: { $in: enrolledStudentIds },
+            role: 'student',
+            isActive: true
+          }).select('name email phone pushSubscription notificationPreferences board class')
+        : [];
+
+      const enrolledStudentsFromMarketing = marketingEnrollmentEmails.length > 0
+        ? await User.find({
+            email: { $in: marketingEnrollmentEmails },
+            role: 'student',
+            isActive: true
+          }).select('name email phone pushSubscription notificationPreferences board class')
+        : [];
+
+      // Combine and deduplicate by email
+      const allEnrolledStudentsMap = new Map();
+      [...enrolledStudentsFromEnrollments, ...enrolledStudentsFromMarketing].forEach(student => {
+        const email = student.email.toLowerCase();
+        if (!allEnrolledStudentsMap.has(email)) {
+          allEnrolledStudentsMap.set(email, student);
         }
-
-        // Check if at least one channel is enabled
-        const emailEnabled = student.notificationPreferences.email !== false;
-        const whatsappEnabled = student.notificationPreferences.whatsapp !== false;
-        const pushEnabled = student.notificationPreferences.push !== false;
-
-        // Send notification if at least one channel is enabled
-        return emailEnabled || whatsappEnabled || pushEnabled;
       });
-      
-      if (studentsToNotify.length > 0) {
-        console.log(`Sending notifications to ${studentsToNotify.length} enrolled students for new live class: ${populatedClass.subject}`);
-        // Send notifications asynchronously (don't wait for completion)
-        sendBulkClassNotifications(studentsToNotify, populatedClass).catch(err => {
-          console.error('Error sending class notifications:', err);
-        });
+
+      const allEnrolledStudents = Array.from(allEnrolledStudentsMap.values());
+
+      if (allEnrolledStudents.length === 0) {
+        console.log('No enrolled students found to notify');
       } else {
-        console.log('No students to notify (no matching students or preferences disabled)');
+        // Filter students based on notification preferences
+        // Default to true if preferences not set (to ensure all students get notified)
+        const studentsToNotify = allEnrolledStudents.filter(student => {
+          // Check if student has at least one notification channel enabled
+          if (!student.notificationPreferences) {
+            return true; // No preferences set, send notifications
+          }
+
+          // Check if at least one channel is enabled
+          const emailEnabled = student.notificationPreferences.email !== false;
+          const whatsappEnabled = student.notificationPreferences.whatsapp !== false;
+          const pushEnabled = student.notificationPreferences.push !== false;
+
+          // Send notification if at least one channel is enabled
+          return emailEnabled || whatsappEnabled || pushEnabled;
+        });
+        
+        if (studentsToNotify.length > 0) {
+          console.log(`Sending notifications to ${studentsToNotify.length} enrolled students for new live class: ${populatedClass.subject}`);
+          // Send notifications asynchronously (don't wait for completion)
+          sendBulkClassNotifications(studentsToNotify, populatedClass).catch(err => {
+            console.error('Error sending class notifications:', err);
+          });
+        } else {
+          console.log('No students to notify (notification preferences disabled for all enrolled students)');
+        }
       }
     } catch (notifError) {
       console.error('Notification error (non-blocking):', notifError);

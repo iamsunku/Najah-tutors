@@ -129,6 +129,9 @@ function showSection(sectionName) {
         case 'live-classes':
             loadLiveClasses();
             break;
+        case 'notifications':
+            loadNotifications();
+            break;
     }
 }
 
@@ -1176,11 +1179,11 @@ async function loadSubjects() {
         if (subjectsList.length === 0) {
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="3" class="px-4 py-6 text-center text-gray-500">
+                    <td colspan="6" class="px-4 py-6 text-center text-gray-500">
                         <div class="flex flex-col items-center space-y-2">
                             <i class="fas fa-book-open text-3xl text-gray-300"></i>
                             <p>No subjects found</p>
-                </div>
+                        </div>
                     </td>
                 </tr>
             `;
@@ -1188,6 +1191,9 @@ async function loadSubjects() {
             tbody.innerHTML = subjectsList.map(subject => `
                 <tr>
                     <td class="px-4 py-3 whitespace-nowrap">${subject.subject}</td>
+                    <td class="px-4 py-3 whitespace-nowrap">${subject.board || 'N/A'}</td>
+                    <td class="px-4 py-3 whitespace-nowrap">${subject.class || subject.className || 'N/A'}</td>
+                    <td class="px-4 py-3 whitespace-nowrap">₹${(subject.price || 0).toLocaleString()}</td>
                     <td class="px-4 py-3 whitespace-nowrap">
                         <span class="px-3 py-1 rounded-full text-xs ${subject.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
                             ${subject.isActive ? 'Active' : 'Inactive'}
@@ -1512,6 +1518,81 @@ async function deleteSubject(id) {
     }
 }
 
+// Notifications
+let notificationsCache = [];
+
+async function loadNotifications() {
+    try {
+        showLoading();
+
+        // Use enrollment data as the notification feed source
+        const enrollmentsResponse = await fetch(`${API_BASE_URL}/enrollments?limit=30`, {
+            headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+
+        const enrollmentsResult = await enrollmentsResponse.json();
+        if (!enrollmentsResponse.ok) throw new Error(enrollmentsResult.message || 'Failed to load enrollments');
+
+        const enrollments = enrollmentsResult.data || [];
+
+        notificationsCache = enrollments
+            .map(e => ({
+                type: 'enrollment',
+                title: `Enrollment - ${e.student?.name || 'Student'}`,
+                detail: `${e.course?.name || 'Course'} ${e.course?.class ? `• Class ${e.course.class}` : ''}`,
+                time: e.createdAt || e.updatedAt || Date.now()
+            }))
+            .sort((a, b) => new Date(b.time) - new Date(a.time))
+            .slice(0, 30);
+
+        renderNotificationsFeed();
+        hideLoading();
+    } catch (error) {
+        console.error('Notifications error:', error);
+        hideLoading();
+        const feed = document.getElementById('notifications-feed');
+        if (feed) {
+            feed.innerHTML = `<p class="text-red-600">Failed to load notifications: ${error.message}</p>`;
+        }
+    }
+}
+
+function renderNotificationsFeed() {
+    const feed = document.getElementById('notifications-feed');
+    if (!feed) return;
+
+    if (!notificationsCache.length) {
+        feed.innerHTML = '<p class="text-gray-500">No notifications yet.</p>';
+        return;
+    }
+
+    feed.innerHTML = notificationsCache.map(event => {
+        const badgeColors = 'bg-green-100 text-green-800';
+
+        const date = new Date(event.time);
+        const formatted = isNaN(date.getTime()) ? '' : date.toLocaleString();
+
+        return `
+            <div class="flex items-start justify-between p-4 bg-gray-50 rounded-lg border border-gray-100">
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="px-2 py-1 rounded-full text-xs font-semibold ${badgeColors}">
+                            Enrollment
+                        </span>
+                        ${formatted ? `<span class="text-xs text-gray-500">${formatted}</span>` : ''}
+                    </div>
+                    <p class="font-semibold text-gray-800">${event.title}</p>
+                    <p class="text-sm text-gray-600">${event.detail || ''}</p>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function refreshNotifications() {
+    loadNotifications();
+}
+
 // Enrollments
 let allEnrollments = [];
 let allMarketingEnrollments = [];
@@ -1520,6 +1601,7 @@ let enrollmentFilters = {
     class: '',
     subject: ''
 };
+let enrollmentSearchQuery = '';
 
 async function loadEnrollments() {
     try {
@@ -1578,6 +1660,12 @@ function onEnrollmentFilterChange() {
     renderEnrollmentsTable();
 }
 
+function filterEnrollmentsSearch() {
+    const searchInput = document.getElementById('enrollmentsSearch');
+    enrollmentSearchQuery = searchInput ? searchInput.value.trim().toLowerCase() : '';
+    renderEnrollmentsTable();
+}
+
 function populateEnrollmentFilterOptions() {
     const boards = new Set();
     const classes = new Set();
@@ -1628,10 +1716,11 @@ function populateEnrollmentFilterOptions() {
 }
 
 function renderEnrollmentsTable() {
-        const tbody = document.getElementById('enrollments-table-body');
+    const tbody = document.getElementById('enrollments-table-body');
     if (!tbody) return;
 
     const { board, class: classFilter, subject } = enrollmentFilters;
+    const q = enrollmentSearchQuery;
 
     // Filter regular enrollments
     const filteredRegular = allEnrollments.filter(enrollment => {
@@ -1640,6 +1729,12 @@ function renderEnrollmentsTable() {
         if (subject) {
             const subjectsArr = Array.isArray(enrollment.subjects) ? enrollment.subjects : [];
             if (!subjectsArr.includes(subject)) return false;
+        }
+        if (q) {
+            const name = (enrollment.student?.name || '').toLowerCase();
+            const email = (enrollment.student?.email || '').toLowerCase();
+            const phone = (enrollment.student?.phone || '').toLowerCase();
+            if (!name.includes(q) && !email.includes(q) && !phone.includes(q)) return false;
         }
         return true;
     });
@@ -1652,19 +1747,25 @@ function renderEnrollmentsTable() {
             const subjectsArr = Array.isArray(enrollment.subjects) ? enrollment.subjects : [];
             if (!subjectsArr.some(s => s.subject === subject)) return false;
         }
+        if (q) {
+            const name = (enrollment.studentName || '').toLowerCase();
+            const email = (enrollment.email || '').toLowerCase();
+            const phone = (enrollment.phone || '').toLowerCase();
+            if (!name.includes(q) && !email.includes(q) && !phone.includes(q)) return false;
+        }
         return true;
     });
 
     let html = filteredRegular.map(enrollment => `
             <tr>
-            <td class="px-4 py-3 whitespace-nowrap border-r border-gray-200">${enrollment.student?.name || 'N/A'}</td>
-            <td class="px-4 py-3 whitespace-nowrap border-r border-gray-200">${enrollment.student?.email || 'N/A'}</td>
-            <td class="px-4 py-3 whitespace-nowrap border-r border-gray-200">${enrollment.student?.phone || 'N/A'}</td>
-            <td class="px-4 py-3 whitespace-nowrap border-r border-gray-200">${enrollment.student?.board || 'N/A'}</td>
-            <td class="px-4 py-3 whitespace-nowrap border-r border-gray-200">${enrollment.course?.class || 'N/A'}</td>
-            <td class="px-4 py-3 border-r border-gray-200">${Array.isArray(enrollment.subjects) ? enrollment.subjects.join(', ') : 'N/A'}</td>
-            <td class="px-4 py-3 whitespace-nowrap border-r border-gray-200">₹${enrollment.amount || 0}</td>
-            <td class="px-4 py-3 whitespace-nowrap border-r border-gray-200">
+            <td class="px-4 py-3 whitespace-nowrap">${enrollment.student?.name || 'N/A'}</td>
+            <td class="px-4 py-3 whitespace-nowrap">${enrollment.student?.email || 'N/A'}</td>
+            <td class="px-4 py-3 whitespace-nowrap">${enrollment.student?.phone || 'N/A'}</td>
+            <td class="px-4 py-3 whitespace-nowrap">${enrollment.student?.board || 'N/A'}</td>
+            <td class="px-4 py-3 whitespace-nowrap">${enrollment.course?.class || 'N/A'}</td>
+            <td class="px-4 py-3">${Array.isArray(enrollment.subjects) ? enrollment.subjects.join(', ') : 'N/A'}</td>
+            <td class="px-4 py-3 whitespace-nowrap">₹${enrollment.amount || 0}</td>
+            <td class="px-4 py-3 whitespace-nowrap">
                     <span class="px-3 py-1 rounded-full text-xs ${getStatusColor(enrollment.status || 'pending')}">${enrollment.status || 'pending'}</span>
                 </td>
                 <td class="px-4 py-3 whitespace-nowrap">
@@ -1674,17 +1775,17 @@ function renderEnrollmentsTable() {
         `).join('');
 
     html += filteredMarketing.map(enrollment => `
-            <tr class="bg-yellow-50">
-            <td class="px-4 py-3 whitespace-nowrap border-r border-gray-200">
+            <tr>
+            <td class="px-4 py-3 whitespace-nowrap">
                         <span class="font-semibold">${enrollment.studentName}</span>
                 </td>
-            <td class="px-4 py-3 whitespace-nowrap border-r border-gray-200">${enrollment.email || 'N/A'}</td>
-            <td class="px-4 py-3 whitespace-nowrap border-r border-gray-200">${enrollment.phone || 'N/A'}</td>
-            <td class="px-4 py-3 whitespace-nowrap border-r border-gray-200">${enrollment.board || 'N/A'}</td>
-            <td class="px-4 py-3 whitespace-nowrap border-r border-gray-200">${enrollment.class || 'N/A'}</td>
-            <td class="px-4 py-3 border-r border-gray-200">${enrollment.subjects.map(s => s.subject).join(', ')}</td>
-            <td class="px-4 py-3 whitespace-nowrap border-r border-gray-200">₹${enrollment.totalAmount || 0}</td>
-            <td class="px-4 py-3 whitespace-nowrap border-r border-gray-200">
+            <td class="px-4 py-3 whitespace-nowrap">${enrollment.email || 'N/A'}</td>
+            <td class="px-4 py-3 whitespace-nowrap">${enrollment.phone || 'N/A'}</td>
+            <td class="px-4 py-3 whitespace-nowrap">${enrollment.board || 'N/A'}</td>
+            <td class="px-4 py-3 whitespace-nowrap">${enrollment.class || 'N/A'}</td>
+            <td class="px-4 py-3">${enrollment.subjects.map(s => s.subject).join(', ')}</td>
+            <td class="px-4 py-3 whitespace-nowrap">₹${enrollment.totalAmount || 0}</td>
+            <td class="px-4 py-3 whitespace-nowrap">
                     <span class="px-3 py-1 rounded-full text-xs bg-yellow-100 text-yellow-800">Pending</span>
                 </td>
                 <td class="px-4 py-3 whitespace-nowrap">

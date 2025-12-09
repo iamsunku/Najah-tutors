@@ -6,6 +6,7 @@
     <title>Student Dashboard - Najah Tutors</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
         * {
@@ -33,7 +34,7 @@
             </a>
             <a href="#" onclick="showSection('courses')" class="nav-item flex items-center px-6 py-3 hover:bg-white hover:bg-opacity-10 cursor-pointer" data-section="courses">
                 <i class="fas fa-book w-6"></i>
-                <span class="ml-3">My Courses</span>
+                <span class="ml-3">My Subjects</span>
             </a>
             <a href="#" onclick="showSection('invoices')" class="nav-item flex items-center px-6 py-3 hover:bg-white hover:bg-opacity-10 cursor-pointer" data-section="invoices">
                 <i class="fas fa-file-invoice-dollar w-6"></i>
@@ -78,7 +79,7 @@
                     <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white card-hover shadow-lg">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-blue-200 text-sm">My Courses</p>
+                                <p class="text-blue-200 text-sm">My Subjects</p>
                                 <h3 id="stat-courses-count" class="text-3xl font-bold mt-2">0</h3>
                             </div>
                             <i class="fas fa-book text-4xl opacity-50"></i>
@@ -87,10 +88,10 @@
                     <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white card-hover shadow-lg">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-green-200 text-sm">Total Spent</p>
-                                <h3 id="stat-total-spent" class="text-3xl font-bold mt-2">₹0</h3>
+                                <p class="text-green-200 text-sm">Invoices</p>
+                                <h3 id="stat-invoice-count" class="text-3xl font-bold mt-2">0</h3>
                             </div>
-                            <span class="text-4xl opacity-50">₹</span>
+                            <i class="fas fa-file-invoice-dollar text-4xl opacity-50"></i>
                         </div>
                     </div>
                     <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white card-hover shadow-lg">
@@ -105,7 +106,7 @@
                     <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl p-6 text-white card-hover shadow-lg">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-yellow-200 text-sm">Next Class</p>
+                                <p class="text-yellow-200 text-sm">Next Live Class</p>
                                 <h3 id="stat-next-class" class="text-xl font-bold mt-2">--</h3>
                             </div>
                             <i class="fas fa-calendar-check text-4xl opacity-50"></i>
@@ -116,8 +117,20 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                     <div class="bg-white rounded-xl shadow-lg p-6">
                         <h3 class="text-xl font-bold mb-4">My Subjects</h3>
-                        <div id="subjects-list" class="space-y-3">
-                            <p class="text-gray-500">Loading...</p>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Subject</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Board</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Class</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="subjects-list" class="divide-y divide-gray-200">
+                                    <tr><td colspan="4" class="px-4 py-3 text-center text-gray-500">Loading...</td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <div class="bg-white rounded-xl shadow-lg p-6">
@@ -129,17 +142,32 @@
                 </div>
             </div>
 
-            <!-- My Courses Section -->
+            <!-- My Subjects Section -->
             <div id="courses-section" class="section hidden">
                 <div class="bg-white rounded-xl shadow-lg p-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-2xl font-bold">My Courses</h3>
-                        <a href="live_classes.html#courses" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-                            <i class="fas fa-plus mr-2"></i>Browse More
-                        </a>
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
+                        <h3 class="text-2xl font-bold">My Subjects</h3>
+                        <div class="w-full lg:w-1/3">
+                            <div class="relative">
+                                <input type="text" id="coursesSearch" oninput="filterCoursesSearch()" placeholder="Search by subject or board" class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                                <i class="fas fa-search text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                            </div>
+                        </div>
                     </div>
-                    <div id="courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <p class="text-gray-500">Loading your courses...</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Subject</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Board</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Class</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="courses-table-body" class="divide-y divide-gray-200">
+                                <tr><td colspan="4" class="px-4 py-3 text-center text-gray-500">Loading your subjects...</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -149,9 +177,6 @@
                 <div class="bg-white rounded-xl shadow-lg p-6">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-2xl font-bold">My Invoices</h3>
-                        <button onclick="refreshInvoices()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-                            <i class="fas fa-sync-alt mr-2"></i>Refresh
-                        </button>
                     </div>
                     <div id="invoices-container" class="space-y-6">
                         <p class="text-gray-500">Loading your invoices...</p>
@@ -179,11 +204,36 @@
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.js"></script>
     <script>
         // API Configuration
         const API_BASE_URL = window.location.protocol.startsWith('http')
             ? `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}/api`
             : 'http://localhost:5000/api';
+
+        // Toast helper
+        function showToast(message, type = 'info') {
+            const colors = {
+                success: '#16a34a',
+                error: '#dc2626',
+                warning: '#d97706',
+                info: '#2563eb'
+            };
+            Toastify({
+                text: message,
+                duration: 4000,
+                close: true,
+                gravity: 'top',
+                position: 'right',
+                stopOnFocus: true,
+                style: {
+                    background: colors[type] || colors.info,
+                    color: '#fff'
+                }
+            }).showToast();
+        }
+        // Redirect any stray alerts to Toastify
+        window.alert = (msg) => showToast(msg, 'info');
 
         // State Management
         let currentUser = null;
@@ -219,7 +269,7 @@
                 currentUser = data.data;
                 
                 if (currentUser.role !== 'student') {
-                    alert('Access denied. Student only.');
+                    showToast('Access denied. Student only.', 'error');
                     logout();
                     return;
                 }
@@ -264,7 +314,7 @@
             // Update page title
             const titles = {
                 'dashboard': 'Dashboard',
-                'courses': 'My Courses',
+                'courses': 'My Subjects',
                 'invoices': 'My Invoices',
                 'profile': 'Profile'
             };
@@ -324,29 +374,42 @@
                 // Calculate stats
                 const subjects = user.subjects || [];
                 const coursesCount = subjects.length;
-                const totalSpent = enrollments.reduce((sum, e) => sum + (e.totalAmount || 0), 0);
+                const invoiceCount = enrollments.length;
                 const progress = user.progress || '72%';
 
                 // Update stats cards
                 document.getElementById('stat-courses-count').textContent = coursesCount;
-                document.getElementById('stat-total-spent').textContent = `₹${totalSpent.toLocaleString()}`;
+                document.getElementById('stat-invoice-count').textContent = invoiceCount;
                 document.getElementById('stat-progress').textContent = progress;
                 document.getElementById('stat-next-class').textContent = user.nextClass || 'Not Scheduled';
 
-                // Update subjects list
+                // Update subjects list as rows (not cards)
                 const subjectsList = document.getElementById('subjects-list');
                 if (subjects.length > 0) {
                     subjectsList.innerHTML = subjects.map(subject => `
-                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                            <div>
-                                <p class="font-semibold">${subject.subject || subject}</p>
-                                <p class="text-sm text-gray-600">Class ${subject.class || '--'} • ${subject.board || '--'}</p>
-                            </div>
-                            <i class="fas fa-book text-blue-600"></i>
-                        </div>
+                        <tr>
+                            <td class="px-4 py-3 whitespace-nowrap">${subject.subject || subject}</td>
+                            <td class="px-4 py-3 whitespace-nowrap">${subject.board || '--'}</td>
+                            <td class="px-4 py-3 whitespace-nowrap">${subject.class || '--'}</td>
+                            <td class="px-4 py-3 whitespace-nowrap">
+                                <span class="px-3 py-1 rounded-full text-xs bg-green-100 text-green-800">Enrolled</span>
+                            </td>
+                        </tr>
                     `).join('');
                 } else {
-                    subjectsList.innerHTML = '<p class="text-gray-500">No subjects enrolled yet</p>';
+                    subjectsList.innerHTML = `
+                        <tr>
+                            <td colspan="4" class="px-4 py-3 text-center text-gray-500">
+                                <div class="flex flex-col items-center space-y-2">
+                                    <i class="fas fa-book-open text-3xl text-gray-300"></i>
+                                    <p>No subjects enrolled yet</p>
+                                    <a href="live_classes.html#courses" class="inline-flex items-center text-blue-600 hover:underline">
+                                        <i class="fas fa-plus mr-2"></i>Browse subjects
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
                 }
 
                 // Update latest invoice preview
@@ -377,11 +440,13 @@
             } catch (error) {
                 console.error('Dashboard error:', error);
                 hideLoading();
-                alert('Failed to load dashboard data');
+                showToast('Failed to load dashboard data', 'error');
             }
         }
 
-        // Courses
+        // Courses (My Subjects)
+        let coursesSearchQuery = '';
+
         async function loadCourses() {
             try {
                 showLoading();
@@ -394,44 +459,63 @@
                 if (!response.ok) throw new Error('Failed to load courses');
                 const result = await response.json();
                 const user = result.data;
+                currentUser = user; // keep cached for search
                 const subjects = user.subjects || [];
-                const coursesGrid = document.getElementById('courses-grid');
-
-                if (subjects.length > 0) {
-                    coursesGrid.innerHTML = subjects.map(subject => `
-                        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100 card-hover">
-                            <div class="flex items-center justify-between mb-4">
-                                <i class="fas fa-book text-4xl text-blue-600"></i>
-                                <span class="px-3 py-1 rounded-full text-xs bg-blue-100 text-blue-800">Active</span>
-                            </div>
-                            <h3 class="text-xl font-bold text-gray-800 mb-2">${subject.subject || subject}</h3>
-                            <p class="text-gray-600 text-sm mb-4">Class ${subject.class || '--'} • ${subject.board || '--'}</p>
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm text-gray-500">Status: Enrolled</span>
-                                <button class="text-blue-600 hover:text-blue-800">
-                                    <i class="fas fa-arrow-right"></i>
-                                </button>
-                            </div>
-                        </div>
-                    `).join('');
-                } else {
-                    coursesGrid.innerHTML = `
-                        <div class="col-span-full text-center py-12">
-                            <i class="fas fa-book-open text-6xl text-gray-300 mb-4"></i>
-                            <p class="text-gray-500 text-lg mb-4">No courses enrolled yet</p>
-                            <a href="live_classes.html#courses" class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
-                                Browse Courses
-                            </a>
-                        </div>
-                    `;
-                }
+                renderCoursesTable(subjects);
 
                 hideLoading();
             } catch (error) {
                 console.error('Courses error:', error);
                 hideLoading();
-                alert('Failed to load courses');
+                showToast('Failed to load courses', 'error');
             }
+        }
+
+        function filterCoursesSearch() {
+            const input = document.getElementById('coursesSearch');
+            coursesSearchQuery = input ? input.value.trim().toLowerCase() : '';
+            const subjects = (currentUser && currentUser.subjects) || [];
+            renderCoursesTable(subjects);
+        }
+
+        function renderCoursesTable(subjects) {
+            const tbody = document.getElementById('courses-table-body');
+            if (!tbody) return;
+
+            const filtered = (subjects || []).filter(sub => {
+                if (!coursesSearchQuery) return true;
+                const subj = (sub.subject || `${sub}`).toLowerCase();
+                const board = (sub.board || '').toLowerCase();
+                return subj.includes(coursesSearchQuery) || board.includes(coursesSearchQuery);
+            });
+
+            if (!filtered.length) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="px-4 py-3 text-center text-gray-500">
+                            <div class="flex flex-col items-center space-y-2">
+                                <i class="fas fa-book-open text-3xl text-gray-300"></i>
+                                <p>No subjects enrolled yet</p>
+                                <a href="live_classes.html#courses" class="inline-flex items-center text-blue-600 hover:underline">
+                                    <i class="fas fa-plus mr-2"></i>Browse subjects
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(sub => `
+                <tr>
+                    <td class="px-4 py-3 whitespace-nowrap">${sub.subject || sub}</td>
+                    <td class="px-4 py-3 whitespace-nowrap">${sub.board || '--'}</td>
+                    <td class="px-4 py-3 whitespace-nowrap">${sub.class || '--'}</td>
+                    <td class="px-4 py-3 whitespace-nowrap">
+                        <span class="px-3 py-1 rounded-full text-xs bg-green-100 text-green-800">Enrolled</span>
+                    </td>
+                </tr>
+            `).join('');
         }
 
         // Invoices
@@ -525,12 +609,8 @@
             } catch (error) {
                 console.error('Invoices error:', error);
                 hideLoading();
-                alert('Failed to load invoices');
+                showToast('Failed to load invoices', 'error');
             }
-        }
-
-        function refreshInvoices() {
-            loadInvoices();
         }
 
         // Profile
@@ -587,7 +667,7 @@
             } catch (error) {
                 console.error('Profile error:', error);
                 hideLoading();
-                alert('Failed to load profile');
+                showToast('Failed to load profile', 'error');
             }
         }
 
