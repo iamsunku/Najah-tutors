@@ -24,6 +24,12 @@ document.addEventListener('DOMContentLoaded', () => {
         loadDashboard();
         loadInitialData();
     }
+    
+    // Add event listener for settings form
+    const settingsForm = document.getElementById('settingsForm');
+    if (settingsForm) {
+        settingsForm.addEventListener('submit', saveSettings);
+    }
 });
 
 // Authentication
@@ -99,7 +105,8 @@ function showSection(sectionName) {
         'courses': 'Subjects',
         'enrollments': 'Enrollments',
         'live-classes': 'Live Classes',
-        'notifications': 'Notifications'
+        'notifications': 'Notifications',
+        'settings': 'Settings'
     };
     document.getElementById('page-title').textContent = titles[sectionName] || 'Dashboard';
 
@@ -131,6 +138,9 @@ function showSection(sectionName) {
             break;
         case 'notifications':
             loadNotifications();
+            break;
+        case 'settings':
+            loadSettings();
             break;
     }
 }
@@ -2377,6 +2387,148 @@ function loadInitialData() {
     // Pre-load dashboard data
     if (document.getElementById('dashboard-section').classList.contains('hidden') === false) {
         loadDashboard();
+    }
+}
+
+// Settings Functions
+async function loadSettings() {
+    try {
+        showLoading();
+        const response = await fetch(`${API_BASE_URL}/admin/settings`, {
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        });
+
+        const result = await response.json();
+        hideLoading();
+
+        if (!response.ok) {
+            throw new Error(result.message || 'Failed to load settings');
+        }
+
+        // Populate form fields
+        document.getElementById('settingsEmail').value = result.data.email || '';
+        document.getElementById('settingsEmailPassword').value = result.data.emailPassword || '';
+        document.getElementById('settingsWhatsAppNumber').value = result.data.whatsappNumber || '';
+
+        // Clear any previous status messages
+        const statusDiv = document.getElementById('settingsStatus');
+        statusDiv.classList.add('hidden');
+        statusDiv.innerHTML = '';
+    } catch (error) {
+        hideLoading();
+        console.error('Error loading settings:', error);
+        showSettingsStatus('Failed to load settings: ' + error.message, 'error');
+    }
+}
+
+async function saveSettings(event) {
+    event.preventDefault();
+    
+    try {
+        showLoading();
+        
+        const email = document.getElementById('settingsEmail').value.trim();
+        const emailPassword = document.getElementById('settingsEmailPassword').value.trim();
+        const whatsappNumber = document.getElementById('settingsWhatsAppNumber').value.trim();
+
+        // Validation
+        if (!email || !emailPassword || !whatsappNumber) {
+            hideLoading();
+            showSettingsStatus('Please fill in all fields', 'error');
+            return;
+        }
+
+        const response = await fetch(`${API_BASE_URL}/admin/settings`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authToken}`
+            },
+            body: JSON.stringify({
+                email,
+                emailPassword,
+                whatsappNumber
+            })
+        });
+
+        const result = await response.json();
+        hideLoading();
+
+        if (!response.ok) {
+            throw new Error(result.message || 'Failed to save settings');
+        }
+
+        showSettingsStatus('Settings saved successfully! Changes have been applied and will be used for new notifications.', 'success');
+    } catch (error) {
+        hideLoading();
+        console.error('Error saving settings:', error);
+        showSettingsStatus('Failed to save settings: ' + error.message, 'error');
+    }
+}
+
+function showSettingsStatus(message, type) {
+    const statusDiv = document.getElementById('settingsStatus');
+    statusDiv.classList.remove('hidden');
+    
+    if (type === 'success') {
+        statusDiv.innerHTML = `
+            <div class="bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 rounded-lg p-4 shadow-sm">
+                <div class="flex items-center">
+                    <div class="bg-green-500 rounded-full p-2 mr-3">
+                        <i class="fas fa-check-circle text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-semibold text-green-800">${message}</p>
+                    </div>
+                    <button onclick="document.getElementById('settingsStatus').classList.add('hidden')" class="text-green-600 hover:text-green-800 ml-2">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    } else {
+        statusDiv.innerHTML = `
+            <div class="bg-gradient-to-r from-red-50 to-rose-50 border-l-4 border-red-500 rounded-lg p-4 shadow-sm">
+                <div class="flex items-center">
+                    <div class="bg-red-500 rounded-full p-2 mr-3">
+                        <i class="fas fa-exclamation-circle text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-semibold text-red-800">${message}</p>
+                    </div>
+                    <button onclick="document.getElementById('settingsStatus').classList.add('hidden')" class="text-red-600 hover:text-red-800 ml-2">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Scroll to status message
+    statusDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    
+    // Auto-hide success messages after 5 seconds
+    if (type === 'success') {
+        setTimeout(() => {
+            statusDiv.classList.add('hidden');
+        }, 5000);
+    }
+}
+
+function togglePasswordVisibility(inputId) {
+    const input = document.getElementById(inputId);
+    const icon = document.getElementById(inputId + 'Icon');
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
     }
 }
 

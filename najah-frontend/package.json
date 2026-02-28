@@ -1,0 +1,9 @@
+{
+  "name": "najah-frontend",
+  "version": "1.0.0",
+  "description": "Static frontend for Najah Tutors",
+  "scripts": {
+    "start": "npx http-server -p 3000"
+  },
+  "license": "ISC"
+}

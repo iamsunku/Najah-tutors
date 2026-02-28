@@ -29,9 +29,6 @@ if (process.env.NODE_ENV === 'development') {
 // Serve static files for admin dashboard
 app.use(express.static('public'));
 
-// Serve uploaded files
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
 // Serve frontend files
 app.use(express.static(path.join(__dirname, '../najah-frontend')));
 
@@ -44,8 +41,6 @@ app.use('/api/subjects', require('./routes/subjects'));
 app.use('/api/enrollments', require('./routes/enrollments'));
 app.use('/api/live-classes', require('./routes/liveClasses'));
 app.use('/api/admin', require('./routes/admin'));
-app.use('/api/upload', require('./routes/upload'));
-app.use('/api/notifications', require('./routes/notifications'));
 
 // Health check
 app.get('/api/health', (req, res) => {

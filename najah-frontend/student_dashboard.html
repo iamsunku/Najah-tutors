@@ -1,46 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpeg" href="fav-icon.jpg">
     <title>Student Dashboard - Najah Tutors</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&family=Roboto:wght@300;400;500;700&display=swap');
+
         * {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Roboto', sans-serif;
         }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .font-heading {
+            font-family: 'Open Sans', sans-serif;
+        }
+
         .sidebar-transition {
             transition: all 0.3s ease;
         }
+
         .card-hover:hover {
             transform: translateY(-5px);
             transition: all 0.3s ease;
         }
     </style>
 </head>
+
 <body class="bg-gray-100">
     <!-- Sidebar -->
-    <div id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-gradient-to-b from-blue-900 to-indigo-900 text-white sidebar-transition z-50">
+    <div id="sidebar"
+        class="fixed inset-y-0 left-0 w-64 bg-gradient-to-b from-blue-900 to-blue-950 text-white sidebar-transition z-50">
         <div class="flex items-center justify-center h-16 bg-black bg-opacity-20">
             <h1 class="text-2xl font-bold"><i class="fas fa-graduation-cap mr-2"></i>Najah Student</h1>
         </div>
         <nav class="mt-8">
-            <a href="#" onclick="showSection('dashboard')" class="nav-item flex items-center px-6 py-3 hover:bg-white hover:bg-opacity-10 cursor-pointer active-nav" data-section="dashboard">
+            <a href="#" onclick="showSection('dashboard')"
+                class="nav-item flex items-center px-6 py-3 hover:bg-white hover:bg-opacity-10 cursor-pointer active-nav"
+                data-section="dashboard">
                 <i class="fas fa-tachometer-alt w-6"></i>
                 <span class="ml-3">Dashboard</span>
             </a>
-            <a href="#" onclick="showSection('courses')" class="nav-item flex items-center px-6 py-3 hover:bg-white hover:bg-opacity-10 cursor-pointer" data-section="courses">
+            <a href="#" onclick="showSection('courses')"
+                class="nav-item flex items-center px-6 py-3 hover:bg-white hover:bg-opacity-10 cursor-pointer"
+                data-section="courses">
                 <i class="fas fa-book w-6"></i>
                 <span class="ml-3">My Subjects</span>
             </a>
-            <a href="#" onclick="showSection('invoices')" class="nav-item flex items-center px-6 py-3 hover:bg-white hover:bg-opacity-10 cursor-pointer" data-section="invoices">
+            <a href="#" onclick="showSection('invoices')"
+                class="nav-item flex items-center px-6 py-3 hover:bg-white hover:bg-opacity-10 cursor-pointer"
+                data-section="invoices">
                 <i class="fas fa-file-invoice-dollar w-6"></i>
                 <span class="ml-3">My Invoices</span>
             </a>
-            <a href="#" onclick="showSection('profile')" class="nav-item flex items-center px-6 py-3 hover:bg-white hover:bg-opacity-10 cursor-pointer" data-section="profile">
+            <a href="#" onclick="showSection('profile')"
+                class="nav-item flex items-center px-6 py-3 hover:bg-white hover:bg-opacity-10 cursor-pointer"
+                data-section="profile">
                 <i class="fas fa-user-circle w-6"></i>
                 <span class="ml-3">Profile</span>
             </a>
@@ -63,7 +88,8 @@
             </div>
             <div class="flex items-center space-x-4">
                 <div class="flex items-center space-x-2">
-                    <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">
+                    <div
+                        class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">
                         <span id="student-initials">S</span>
                     </div>
                     <span id="student-name" class="font-semibold text-gray-700">Student</span>
@@ -76,7 +102,8 @@
             <!-- Dashboard Section -->
             <div id="dashboard-section" class="section">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white card-hover shadow-lg">
+                    <div
+                        class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white card-hover shadow-lg">
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-blue-200 text-sm">My Subjects</p>
@@ -85,7 +112,8 @@
                             <i class="fas fa-book text-4xl opacity-50"></i>
                         </div>
                     </div>
-                    <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white card-hover shadow-lg">
+                    <div
+                        class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white card-hover shadow-lg">
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-green-200 text-sm">Invoices</p>
@@ -94,16 +122,18 @@
                             <i class="fas fa-file-invoice-dollar text-4xl opacity-50"></i>
                         </div>
                     </div>
-                    <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white card-hover shadow-lg">
+                    <div
+                        class="bg-gradient-to-br from-blue-800 to-blue-900 rounded-xl p-6 text-white card-hover shadow-lg">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-purple-200 text-sm">Progress</p>
+                                <p class="text-blue-200 text-sm">Progress</p>
                                 <h3 id="stat-progress" class="text-3xl font-bold mt-2">0%</h3>
                             </div>
                             <i class="fas fa-chart-line text-4xl opacity-50"></i>
                         </div>
                     </div>
-                    <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl p-6 text-white card-hover shadow-lg">
+                    <div
+                        class="bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl p-6 text-white card-hover shadow-lg">
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-yellow-200 text-sm">Next Live Class</p>
@@ -121,14 +151,20 @@
                             <table class="w-full">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Subject</th>
-                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Board</th>
-                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Class</th>
-                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                            Subject</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                            Board</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                            Class</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                            Status</th>
                                     </tr>
                                 </thead>
                                 <tbody id="subjects-list" class="divide-y divide-gray-200">
-                                    <tr><td colspan="4" class="px-4 py-3 text-center text-gray-500">Loading...</td></tr>
+                                    <tr>
+                                        <td colspan="4" class="px-4 py-3 text-center text-gray-500">Loading...</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -149,7 +185,9 @@
                         <h3 class="text-2xl font-bold">My Subjects</h3>
                         <div class="w-full lg:w-1/3">
                             <div class="relative">
-                                <input type="text" id="coursesSearch" oninput="filterCoursesSearch()" placeholder="Search by subject or board" class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                                <input type="text" id="coursesSearch" oninput="filterCoursesSearch()"
+                                    placeholder="Search by subject or board"
+                                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-800">
                                 <i class="fas fa-search text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
                             </div>
                         </div>
@@ -158,14 +196,21 @@
                         <table class="w-full">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Subject</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Board</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Class</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Subject
+                                    </th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Board
+                                    </th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Class
+                                    </th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody id="courses-table-body" class="divide-y divide-gray-200">
-                                <tr><td colspan="4" class="px-4 py-3 text-center text-gray-500">Loading your subjects...</td></tr>
+                                <tr>
+                                    <td colspan="4" class="px-4 py-3 text-center text-gray-500">Loading your subjects...
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -207,9 +252,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.js"></script>
     <script>
         // API Configuration
-        const API_BASE_URL = window.location.protocol.startsWith('http')
-            ? `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}/api`
-            : 'http://localhost:5000/api';
+        const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:5000/api'
+            : '/api';
 
         // Toast helper
         function showToast(message, type = 'info') {
@@ -267,7 +312,7 @@
 
                 const data = await response.json();
                 currentUser = data.data;
-                
+
                 if (currentUser.role !== 'student') {
                     showToast('Access denied. Student only.', 'error');
                     logout();
@@ -321,7 +366,7 @@
             document.getElementById('page-title').textContent = titles[sectionName] || 'Dashboard';
 
             // Load section data
-            switch(sectionName) {
+            switch (sectionName) {
                 case 'dashboard':
                     loadDashboard();
                     break;
@@ -346,7 +391,7 @@
         async function loadDashboard() {
             try {
                 showLoading();
-                
+
                 // Load user data
                 const userResponse = await fetch(`${API_BASE_URL}/auth/me`, {
                     headers: {
@@ -539,7 +584,7 @@
                         const formattedDate = enrollment.createdAt
                             ? new Date(enrollment.createdAt).toLocaleString()
                             : '';
-                        
+
                         return `
                             <div class="bg-white border rounded-xl p-6 shadow-sm">
                                 <div class="flex justify-between items-start mb-4">
@@ -691,7 +736,7 @@
                     console.warn('Service Worker requires HTTP/HTTPS. Please access via http://localhost:5000');
                     return;
                 }
-                
+
                 navigator.serviceWorker.register('/sw.js')
                     .then(registration => {
                         console.log('Service Worker registered:', registration);
@@ -702,6 +747,8 @@
             });
         }
     </script>
-    <script src="/push-notifications.js" onerror="console.error('Failed to load push-notifications.js. Make sure server is running and file is accessible.')"></script>
+    <script src="/push-notifications.js"
+        onerror="console.error('Failed to load push-notifications.js. Make sure server is running and file is accessible.')"></script>
 </body>
+
 </html>

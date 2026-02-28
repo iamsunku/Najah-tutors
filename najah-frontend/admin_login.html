@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpeg" href="fav-icon.jpg">
+    <title>Admin Portal - Najah Tutors</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --brand-navy: #0c213d;
+            --brand-orange: #f7941d;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--brand-navy);
+            overflow: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.5);
+        }
+
+        .input-glow:focus {
+            border-color: var(--brand-orange);
+            box-shadow: 0 0 15px rgba(255, 153, 51, 0.2);
+        }
+
+        @keyframes bg-glow {
+            0% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+        }
+
+        .glow-sphere {
+            animation: bg-glow 10s infinite ease-in-out;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center relative p-4">
+    <!-- Animated background -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div
+            class="glow-sphere absolute top-[10%] left-[20%] w-[30vw] h-[30vw] bg-[#0c213d]/30 blur-[150px] rounded-full">
+        </div>
+        <div class="glow-sphere absolute bottom-[10%] right-[20%] w-[30vw] h-[30vw] bg-[#f7941d]/10 blur-[150px] rounded-full"
+            style="animation-delay: -5s;"></div>
+    </div>
+
+    <div class="w-full max-w-lg relative z-10 scale-in animate-scaleIn">
+        <div class="text-center mb-10">
+            <img src="logo1.png" alt="Najah Tutors"
+                class="h-16 w-auto mx-auto mb-6 filter brightness-0 invert opacity-90">
+            <h1 class="text-3xl font-extrabold text-white font-outfit tracking-tight">Admin System Access</h1>
+            <p class="text-blue-200/50 mt-2 text-sm uppercase tracking-widest font-bold">Authorized Personnel Only</p>
+        </div>
+
+        <div class="glass-panel p-10 md:p-12 rounded-[2.5rem]">
+            <div id="alert-container" class="mb-6 hidden"></div>
+
+            <form id="adminLoginForm" class="space-y-6">
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-blue-200/60 uppercase tracking-widest ml-1">Admin
+                        Identity</label>
+                    <div class="relative group">
+                        <span
+                            class="absolute inset-y-0 left-0 pl-5 flex items-center text-blue-200/30 group-focus-within:text-orange-400 transition-colors">
+                            <i class="fas fa-user-shield text-sm"></i>
+                        </span>
+                        <input type="text" id="adminUser" required placeholder="Administrator"
+                            class="input-glow w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-2xl outline-none transition-all text-white placeholder-blue-200/20" />
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-blue-200/60 uppercase tracking-widest ml-1">Access
+                        Token</label>
+                    <div class="relative group">
+                        <span
+                            class="absolute inset-y-0 left-0 pl-5 flex items-center text-blue-200/30 group-focus-within:text-orange-400 transition-colors">
+                            <i class="fas fa-key text-sm"></i>
+                        </span>
+                        <input type="password" id="adminPass" required placeholder="••••••••"
+                            class="input-glow w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-2xl outline-none transition-all text-white placeholder-blue-200/20" />
+                    </div>
+                </div>
+
+                <div class="pt-4">
+                    <button type="submit" id="loginBtn"
+                        class="w-full bg-gradient-to-r from-[#f7941d] to-[#e67e22] text-white py-4 rounded-2xl font-bold flex items-center justify-center space-x-2 shadow-xl shadow-orange-500/20 hover:shadow-orange-500/40 transition transform hover:-translate-y-1 active:scale-95">
+                        <i class="fas fa-lock-open text-xs mr-2"></i>
+                        <span>Authenticate Access</span>
+                    </button>
+                </div>
+            </form>
+
+            <div class="mt-8 pt-8 border-t border-white/5 text-center">
+                <a href="index.html"
+                    class="text-blue-200/30 text-xs font-bold hover:text-white transition uppercase tracking-widest">
+                    <i class="fas fa-arrow-left mr-2"></i> Return to Site
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const adminLoginForm = document.getElementById('adminLoginForm');
+        const loginBtn = document.getElementById('loginBtn');
+        const alertContainer = document.getElementById('alert-container');
+
+        const showAlert = (message) => {
+            alertContainer.innerHTML = `
+                <div class="bg-red-500/10 border-l-4 border-red-500 text-red-400 p-4 rounded-xl flex items-center space-x-3 transition-all animate-pulse text-sm">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p class="font-bold uppercase tracking-widest text-[10px]">${message}</p>
+                </div>
+            `;
+            alertContainer.classList.remove('hidden');
+        };
+
+        adminLoginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alertContainer.classList.add('hidden');
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i> AUTHENTICATING...';
+
+            const user = document.getElementById('adminUser').value;
+            const pass = document.getElementById('adminPass').value;
+
+            // Simple demo authentication logic
+            setTimeout(() => {
+                if (user && pass) {
+                    window.location.href = 'admin_dashboard.html';
+                } else {
+                    showAlert('Authentication Rejected');
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = '<i class="fas fa-lock-open text-xs mr-2"></i> Authenticate Access';
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+
+</html>

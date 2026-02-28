@@ -6,6 +6,7 @@ const {
   updateTeacher
 } = require('../controllers/adminController');
 const { getMarketingEnrollments } = require('../controllers/marketingEnrollmentController');
+const { getSettings, updateSettings } = require('../controllers/settingsController');
 
 const { protect, authorize } = require('../middleware/auth');
 
@@ -23,6 +24,10 @@ router.route('/teachers')
 
 router.route('/teachers/:id')
   .put(updateTeacher);
+
+router.route('/settings')
+  .get(getSettings)
+  .put(updateSettings);
 
 module.exports = router;
 

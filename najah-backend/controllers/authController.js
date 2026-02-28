@@ -6,7 +6,7 @@ const { sendResetReminderEmail, sendPasswordOtpEmail } = require('../utils/email
 // @access  Public
 exports.register = async (req, res, next) => {
   try {
-    const { name, email, password, role, phone, schoolName, class: studentClass, board } = req.body;
+    const { name, email, password, role, phone, schoolName, class: studentClass, grade, board, country } = req.body;
 
     // Create user
     const user = await User.create({
@@ -16,12 +16,13 @@ exports.register = async (req, res, next) => {
       role: role || 'student',
       phone,
       schoolName,
-      class: studentClass,
-      board
+      class: studentClass || grade,
+      board,
+      country
     });
 
     // Send login response
-    sendTokenResponse(user, 200, res);
+    sendTokenResponse(user, 201, res);
   } catch (error) {
     res.status(400).json({
       success: false,
@@ -101,15 +102,15 @@ exports.getMe = async (req, res, next) => {
   if ((!user.subjects || user.subjects.length === 0) && user.email) {
     try {
       const MarketingEnrollment = require('../models/MarketingEnrollment');
-      const enrollments = await MarketingEnrollment.find({ 
-        email: user.email.toLowerCase() 
+      const enrollments = await MarketingEnrollment.find({
+        email: user.email.toLowerCase()
       }).sort('-createdAt');
-      
+
       if (enrollments.length > 0) {
         // Collect all unique subjects from all enrollments
         const allSubjects = [];
         const subjectKeys = new Set();
-        
+
         enrollments.forEach(enrollment => {
           if (enrollment.subjects && enrollment.subjects.length > 0) {
             enrollment.subjects.forEach(s => {
@@ -126,7 +127,7 @@ exports.getMe = async (req, res, next) => {
             });
           }
         });
-        
+
         if (allSubjects.length > 0) {
           user.subjects = allSubjects;
           await user.save();

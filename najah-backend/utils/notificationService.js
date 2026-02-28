@@ -355,6 +355,214 @@ Najah Tutors Team`;
   return results;
 };
 
+// Send course creation notification (email + WhatsApp)
+exports.sendCourseCreationNotification = async (student, course) => {
+  const results = {
+    email: null,
+    whatsapp: null
+  };
+
+  const courseName = course.name || 'New Course';
+  const board = course.board || '';
+  const className = course.class || '';
+  const subjects = course.subjects && course.subjects.length > 0 
+    ? course.subjects.map(s => s.name).join(', ') 
+    : 'Various subjects';
+
+  // Email content
+  const emailSubject = `🎓 New Course Available: ${courseName}`;
+  const emailHtml = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+        .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+        .course-info { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #667eea; }
+        .info-row { margin: 10px 0; }
+        .info-label { font-weight: bold; color: #667eea; }
+        .button { display: inline-block; padding: 12px 30px; background: #667eea; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }
+        .footer { text-align: center; margin-top: 30px; color: #666; font-size: 12px; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>🎓 New Course Available!</h1>
+        </div>
+        <div class="content">
+          <h2>Hello ${student.name},</h2>
+          <p>We're excited to announce a new course that might interest you:</p>
+          
+          <div class="course-info">
+            <div class="info-row"><span class="info-label">Course Name:</span> ${courseName}</div>
+            ${board ? `<div class="info-row"><span class="info-label">Board:</span> ${board}</div>` : ''}
+            ${className ? `<div class="info-row"><span class="info-label">Class:</span> ${className}</div>` : ''}
+            <div class="info-row"><span class="info-label">Subjects:</span> ${subjects}</div>
+          </div>
+
+          <p>Check out this new course and enroll if you're interested!</p>
+          
+          <p>Best regards,<br><strong>Najah Tutors Team</strong></p>
+        </div>
+        <div class="footer">
+          <p>This is an automated notification. Please do not reply to this email.</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  // WhatsApp message
+  const whatsappMessage = `🎓 *Najah Tutors - New Course Available!*
+
+Hello ${student.name},
+
+We're excited to announce a new course:
+
+*${courseName}*
+${board ? `📋 Board: ${board}` : ''}
+${className ? `🎓 Class: ${className}` : ''}
+📚 Subjects: ${subjects}
+
+Check out this new course and enroll if you're interested!
+
+Best regards,
+Najah Tutors Team`;
+
+  // Send email
+  if (student.email) {
+    results.email = await sendEmailNotification(student.email, student.name, emailSubject, emailHtml);
+  }
+
+  // Send WhatsApp
+  if (student.phone) {
+    results.whatsapp = await sendWhatsAppMessage(student.phone, whatsappMessage);
+  }
+
+  return results;
+};
+
+// Send enrollment notification (email + WhatsApp)
+exports.sendEnrollmentNotification = async (student, enrollment) => {
+  const results = {
+    email: null,
+    whatsapp: null
+  };
+
+  const course = enrollment.course || {};
+  const courseName = course.name || 'Course';
+  const board = course.board || '';
+  const className = course.class || '';
+  const subjects = enrollment.subjects && enrollment.subjects.length > 0 
+    ? enrollment.subjects.join(', ') 
+    : 'Various subjects';
+  const amount = enrollment.amount || 0;
+
+  // Email content
+  const emailSubject = `✅ Enrollment Confirmed: ${courseName}`;
+  const emailHtml = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+        .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+        .enrollment-info { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #48bb78; }
+        .info-row { margin: 10px 0; }
+        .info-label { font-weight: bold; color: #48bb78; }
+        .button { display: inline-block; padding: 12px 30px; background: #48bb78; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }
+        .footer { text-align: center; margin-top: 30px; color: #666; font-size: 12px; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>✅ Enrollment Confirmed!</h1>
+        </div>
+        <div class="content">
+          <h2>Hello ${student.name},</h2>
+          <p>Your enrollment has been confirmed successfully!</p>
+          
+          <div class="enrollment-info">
+            <div class="info-row"><span class="info-label">Course:</span> ${courseName}</div>
+            ${board ? `<div class="info-row"><span class="info-label">Board:</span> ${board}</div>` : ''}
+            ${className ? `<div class="info-row"><span class="info-label">Class:</span> ${className}</div>` : ''}
+            <div class="info-row"><span class="info-label">Subjects:</span> ${subjects}</div>
+            ${amount > 0 ? `<div class="info-row"><span class="info-label">Amount:</span> ₹${amount}</div>` : ''}
+          </div>
+
+          <p>We're excited to have you with us! You can now access your course materials and join live classes.</p>
+          
+          <p>Best regards,<br><strong>Najah Tutors Team</strong></p>
+        </div>
+        <div class="footer">
+          <p>This is an automated notification. Please do not reply to this email.</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  // WhatsApp message
+  const whatsappMessage = `✅ *Najah Tutors - Enrollment Confirmed!*
+
+Hello ${student.name},
+
+Your enrollment has been confirmed successfully!
+
+*Course:* ${courseName}
+${board ? `📋 Board: ${board}` : ''}
+${className ? `🎓 Class: ${className}` : ''}
+📚 Subjects: ${subjects}
+${amount > 0 ? `💰 Amount: ₹${amount}` : ''}
+
+We're excited to have you with us! You can now access your course materials and join live classes.
+
+Best regards,
+Najah Tutors Team`;
+
+  // Send email
+  if (student.email) {
+    results.email = await sendEmailNotification(student.email, student.name, emailSubject, emailHtml);
+  }
+
+  // Send WhatsApp
+  if (student.phone) {
+    results.whatsapp = await sendWhatsAppMessage(student.phone, whatsappMessage);
+  }
+
+  return results;
+};
+
+// Send welcome WhatsApp message (for marketing enrollment)
+exports.sendWelcomeWhatsApp = async (phone, name, password) => {
+  const whatsappMessage = `🎉 *Welcome to Najah Tutors!*
+
+Hello ${name},
+
+Thank you for enrolling in our live online classes. Your account has been created successfully!
+
+*Your Login Credentials:*
+📧 Email: (will be sent via email)
+🔑 Password: *${password}*
+
+⚠️ Please save this password securely. You can change it after logging in.
+
+You can now login to your account using these credentials.
+
+If you have any questions, please don't hesitate to contact us.
+
+Best regards,
+Najah Tutors Team`;
+
+  return await sendWhatsAppMessage(phone, whatsappMessage);
+};
+
 // Get VAPID public key for frontend subscription
 exports.getVapidPublicKey = () => {
   return process.env.VAPID_PUBLIC_KEY || null;

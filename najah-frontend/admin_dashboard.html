@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpeg" href="fav-icon.jpg">
+    <title>Admin Dashboard - Najah Tutors</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --brand-navy: #0c213d;
+            --brand-orange: #f7941d;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+        }
+
+        .sidebar-link.active {
+            background-color: var(--brand-navy);
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(10, 35, 66, 0.2);
+        }
+
+        .data-card {
+            background: white;
+            border-radius: 1.5rem;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .data-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+
+<body class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="w-72 bg-white border-r border-slate-200 hidden lg:flex flex-col p-6 fixed h-full z-20">
+        <div class="mb-10 px-2">
+            <img src="logo1.png" alt="Najah Tutors" class="h-10 w-auto">
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-2 ml-1">Admin Portal</p>
+        </div>
+
+        <nav class="space-y-2 flex-1">
+            <a href="#"
+                class="sidebar-link active flex items-center space-x-3 px-4 py-3 rounded-2xl font-bold transition">
+                <i class="fas fa-users text-sm"></i>
+                <span>Registered Students</span>
+            </a>
+            <a href="#"
+                class="flex items-center space-x-3 px-4 py-3 rounded-2xl font-bold text-slate-500 hover:bg-slate-50 transition">
+                <i class="fas fa-book-open text-sm"></i>
+                <span>Live Classes</span>
+            </a>
+            <a href="#"
+                class="flex items-center space-x-3 px-4 py-3 rounded-2xl font-bold text-slate-500 hover:bg-slate-50 transition">
+                <i class="fas fa-chart-pie text-sm"></i>
+                <span>Analytics</span>
+            </a>
+            <a href="#"
+                class="flex items-center space-x-3 px-4 py-3 rounded-2xl font-bold text-slate-500 hover:bg-slate-50 transition">
+                <i class="fas fa-cog text-sm"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+
+        <div class="mt-auto pt-6 border-t border-slate-100">
+            <button id="logoutBtn"
+                class="flex items-center space-x-3 px-4 py-3 rounded-2xl font-bold text-red-500 hover:bg-red-50 w-full transition">
+                <i class="fas fa-sign-out-alt text-sm"></i>
+                <span>Sign Out</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 lg:ml-72 p-6 md:p-10">
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
+            <div>
+                <h1 class="text-3xl font-extrabold text-[#0c213d] font-outfit">Registered Students</h1>
+                <p class="text-slate-500 mt-1">Manage and track student enrollments across GCC & India.</p>
+            </div>
+            <div class="flex items-center space-x-3">
+                <div class="relative">
+                    <input type="text" placeholder="Search students..."
+                        class="pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-900/10 focus:border-blue-900 transition w-64 text-sm font-medium">
+                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                </div>
+                <button
+                    class="bg-[#0a2342] text-white px-5 py-2.5 rounded-xl font-bold text-sm flex items-center space-x-2 shadow-lg shadow-blue-900/10 hover:bg-slate-800 transition">
+                    <i class="fas fa-download text-xs"></i>
+                    <span>Export Data</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+            <div class="data-card p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-user-graduate text-blue-900"></i>
+                    </div>
+                    <span class="text-xs font-bold text-emerald-500 bg-emerald-50 px-2 py-1 rounded-lg">+12%</span>
+                </div>
+                <h3 class="text-slate-500 text-xs font-bold uppercase tracking-widest">Total Students</h3>
+                <p class="text-3xl font-extrabold text-[#0a2342] mt-1" id="total-count">0</p>
+            </div>
+            <div class="data-card p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-globe text-orange-500"></i>
+                    </div>
+                </div>
+                <h3 class="text-slate-500 text-xs font-bold uppercase tracking-widest">GCC Region</h3>
+                <p class="text-3xl font-extrabold text-[#0a2342] mt-1" id="gcc-count">0</p>
+            </div>
+            <div class="data-card p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-flag-checkered text-slate-600"></i>
+                    </div>
+                </div>
+                <h3 class="text-slate-500 text-xs font-bold uppercase tracking-widest">IGCSE Track</h3>
+                <p class="text-3xl font-extrabold text-[#0a2342] mt-1" id="igcse-count">0</p>
+            </div>
+            <div class="data-card p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-calendar-alt text-emerald-600"></i>
+                    </div>
+                </div>
+                <h3 class="text-slate-500 text-xs font-bold uppercase tracking-widest">New Today</h3>
+                <p class="text-3xl font-extrabold text-[#0a2342] mt-1" id="today-count">0</p>
+            </div>
+        </div>
+
+        <!-- Table Section -->
+        <div class="bg-white border border-slate-200 rounded-[2rem] overflow-hidden shadow-xl shadow-slate-200/50">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="bg-slate-50/50 border-bottom border-slate-100">
+                            <th class="px-8 py-5 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Student
+                                Information</th>
+                            <th class="px-8 py-5 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Contact
+                                Details</th>
+                            <th class="px-8 py-5 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                Curriculum Details</th>
+                            <th class="px-8 py-5 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Status
+                            </th>
+                            <th class="px-8 py-5 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="students-table-body" class="divide-y divide-slate-50">
+                        <!-- Loading State -->
+                        <tr id="loading-row">
+                            <td colspan="5" class="px-8 py-12 text-center text-slate-400">
+                                <i class="fas fa-circle-notch fa-spin mr-2"></i> Fetching records...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="px-8 py-6 bg-slate-50/50 border-t border-slate-100 flex items-center justify-between">
+                <p class="text-xs font-bold text-slate-400">Showing 1-10 of 124 students</p>
+                <div class="flex items-center space-x-2">
+                    <button class="p-2 hover:bg-white rounded-lg transition text-slate-400"><i
+                            class="fas fa-chevron-left text-xs"></i></button>
+                    <button
+                        class="w-8 h-8 flex items-center justify-center bg-blue-900 text-white rounded-lg font-bold text-xs shadow-lg shadow-blue-900/20">1</button>
+                    <button
+                        class="w-8 h-8 flex items-center justify-center hover:bg-white text-slate-500 rounded-lg font-bold text-xs">2</button>
+                    <button
+                        class="w-8 h-8 flex items-center justify-center hover:bg-white text-slate-500 rounded-lg font-bold text-xs">3</button>
+                    <button class="p-2 hover:bg-white rounded-lg transition text-slate-400"><i
+                            class="fas fa-chevron-right text-xs"></i></button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:5000/api'
+            : '/api';
+
+        async function fetchStudents() {
+            try {
+                // Endpoint check - logic for your backend
+                const response = await fetch(`${API_BASE_URL}/students`);
+                const result = await response.json();
+
+                const tableBody = document.getElementById('students-table-body');
+                document.getElementById('loading-row').remove();
+
+                if (result.success && result.data.length > 0) {
+                    // Update stats
+                    document.getElementById('total-count').textContent = result.data.length;
+                    document.getElementById('gcc-count').textContent = result.data.filter(s => ['Kuwait', 'UAE', 'Qatar', 'Oman'].includes(s.country)).length;
+                    document.getElementById('igcse-count').textContent = result.data.filter(s => s.board === 'IGCSE').length;
+
+                    result.data.forEach(student => {
+                        const row = `
+                            <tr class="hover:bg-slate-50 transition-colors group">
+                                <td class="px-8 py-5">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-10 h-10 bg-[#0a2342] rounded-xl flex items-center justify-center text-white font-bold text-sm">
+                                            ${student.name.charAt(0)}
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-slate-700">${student.name}</p>
+                                            <p class="text-xs text-slate-400">${student.country || 'Not specified'}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-8 py-5">
+                                    <p class="text-sm font-semibold text-slate-600 underline">${student.email}</p>
+                                    <p class="text-xs text-slate-400 mt-1">${student.phone || 'No phone'}</p>
+                                </td>
+                                <td class="px-8 py-5">
+                                    <div class="flex flex-col">
+                                        <span class="text-sm font-bold text-slate-700">${student.grade || 'Unknown Class'}</span>
+                                        <span class="text-[10px] font-extrabold uppercase text-orange-500 bg-orange-50 px-2 py-0.5 rounded inline-block w-max mt-1">${student.board || 'CBSE'}</span>
+                                    </div>
+                                </td>
+                                <td class="px-8 py-5">
+                                    <span class="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-[10px] font-bold uppercase tracking-wider">Active</span>
+                                </td>
+                                <td class="px-8 py-5">
+                                    <div class="flex items-center space-x-2">
+                                        <button class="p-2 text-slate-400 hover:text-blue-900 transition"><i class="fas fa-envelope-open text-xs"></i></button>
+                                        <button class="p-2 text-slate-400 hover:text-red-500 transition"><i class="fas fa-trash text-xs"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                        tableBody.insertAdjacentHTML('beforeend', row);
+                    });
+                } else {
+                    tableBody.innerHTML = `<tr><td colspan="5" class="px-8 py-12 text-center text-slate-400">No student registrations found.</td></tr>`;
+                }
+            } catch (error) {
+                console.error('Error fetching students:', error);
+                document.getElementById('loading-row').innerHTML = `<td colspan="5" class="px-8 py-12 text-center text-red-500">Error loading data. Is the server running?</td>`;
+            }
+        }
+
+        // Logout logic
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            if (confirm('Are you sure you want to sign out?')) {
+                window.location.href = 'index.html';
+            }
+        });
+
+        fetchStudents();
+    </script>
+</body>
+
+</html>

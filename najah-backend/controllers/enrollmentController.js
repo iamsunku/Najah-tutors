@@ -1,6 +1,41 @@
 const Enrollment = require('../models/Enrollment');
 const Course = require('../models/Course');
 const User = require('../models/User');
+const { sendEnrollmentNotification } = require('../utils/notificationService');
+
+// Validate subjects (no duplicates, must exist in course) and compute amount
+const validateSubjectsAndAmount = (subjects, course) => {
+  if (!Array.isArray(subjects) || subjects.length === 0) {
+    const error = new Error('Please select at least one subject');
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // Trim and deduplicate
+  const normalized = subjects
+    .map(s => (typeof s === 'string' ? s.trim() : s))
+    .filter(Boolean);
+  const uniqueSubjects = [...new Set(normalized)];
+
+  if (uniqueSubjects.length !== normalized.length) {
+    const error = new Error('Each subject can only be selected once');
+    error.statusCode = 400;
+    throw error;
+  }
+
+  let amount = 0;
+  for (const subjectName of uniqueSubjects) {
+    const subject = course.subjects.find(s => s.name === subjectName);
+    if (!subject) {
+      const error = new Error(`Subject "${subjectName}" is not available in this course`);
+      error.statusCode = 400;
+      throw error;
+    }
+    amount += subject.price;
+  }
+
+  return { uniqueSubjects, amount };
+};
 
 // @desc    Get all enrollments
 // @route   GET /api/enrollments
@@ -68,25 +103,61 @@ exports.createEnrollment = async (req, res, next) => {
       });
     }
 
-    // Calculate amount
-    let amount = 0;
-    subjects.forEach(subjectName => {
-      const subject = course.subjects.find(s => s.name === subjectName);
-      if (subject) {
-        amount += subject.price;
-      }
+    // Resolve student (by id or current user)
+    const student = await User.findById(studentId || req.user.id);
+    if (!student) {
+      return res.status(404).json({
+        success: false,
+        message: 'Student not found'
+      });
+    }
+
+    // Prevent duplicate enrollment for the same course by the same email/user
+    const existingEnrollment = await Enrollment.findOne({
+      course: courseId,
+      student: student._id
     });
+    if (existingEnrollment) {
+      return res.status(400).json({
+        success: false,
+        message: 'This email is already enrolled in this course'
+      });
+    }
+
+    const { uniqueSubjects, amount } = validateSubjectsAndAmount(subjects, course);
 
     const enrollment = await Enrollment.create({
-      student: studentId || req.user.id,
+      student: student._id,
       course: courseId,
-      subjects,
+      subjects: uniqueSubjects,
       amount
     });
 
     const populatedEnrollment = await Enrollment.findById(enrollment._id)
-      .populate('student', 'name email phone')
+      .populate('student', 'name email phone notificationPreferences')
       .populate('course', 'name board class');
+
+    // Send notification to the enrolled student
+    try {
+      const student = populatedEnrollment.student;
+      if (student) {
+        // Check notification preferences
+        let shouldNotify = true;
+        if (student.notificationPreferences) {
+          const emailEnabled = student.notificationPreferences.email !== false;
+          const whatsappEnabled = student.notificationPreferences.whatsapp !== false;
+          shouldNotify = emailEnabled || whatsappEnabled;
+        }
+
+        if (shouldNotify) {
+          sendEnrollmentNotification(student, populatedEnrollment).catch(err => {
+            console.error('Error sending enrollment notification:', err);
+          });
+        }
+      }
+    } catch (notifError) {
+      console.error('Notification error (non-blocking):', notifError);
+    }
 
     res.status(201).json({
       success: true,
@@ -112,6 +183,20 @@ exports.updateEnrollment = async (req, res, next) => {
         success: false,
         message: 'Enrollment not found'
       });
+    }
+
+    // If subjects are being updated, validate and recalculate amount
+    if (req.body.subjects) {
+      const course = await Course.findById(req.body.course || enrollment.course);
+      if (!course) {
+        return res.status(404).json({
+          success: false,
+          message: 'Course not found'
+        });
+      }
+      const { uniqueSubjects, amount } = validateSubjectsAndAmount(req.body.subjects, course);
+      req.body.subjects = uniqueSubjects;
+      req.body.amount = amount;
     }
 
     enrollment = await Enrollment.findByIdAndUpdate(req.params.id, req.body, {

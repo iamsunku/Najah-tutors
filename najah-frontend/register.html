@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpeg" href="fav-icon.jpg">
+    <title>Student Registration - Najah Tutors</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --brand-navy: #0c213d;
+            --brand-orange: #f7941d;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #061121;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('register_bg.png');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.3) saturate(1.2);
+            z-index: -1;
+            animation: slowZoom 30s linear infinite alternate;
+        }
+
+        @keyframes slowZoom {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1.1);
+            }
+        }
+
+        .font-outfit {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.5);
+            animation: panelSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes panelSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .input-focus:focus {
+            border-color: var(--brand-orange);
+            box-shadow: 0 0 0 5px rgba(247, 148, 29, 0.1);
+        }
+
+        .form-row {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            opacity: 0;
+            animation: fadeIn 1.2s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, var(--brand-navy) 0%, #1a3a5f 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-gradient:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(12, 33, 61, 0.3);
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            75% {
+                transform: translateX(5px);
+            }
+        }
+
+        .animate-shake {
+            animation: shake 0.4s ease-in-out;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Floating Background Decor -->
+    <div class="fixed inset-0 pointer-events-none z-[-1] overflow-hidden">
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[#f7941d]/10 blur-[120px] rounded-full"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#0c213d]/20 blur-[120px] rounded-full">
+        </div>
+    </div>
+
+    <div class="w-full max-w-2xl px-2 scale-[0.9] md:scale-100 origin-center">
+        <div class="text-center mb-4 animate-fade-in">
+            <a href="live_classes.html">
+                <img src="logo.png" alt="Najah Tutors" class="h-14 mx-auto mb-4 scale-110"
+                    style="filter: brightness(0) invert(1);">
+            </a>
+            <h1 class="text-3xl font-black text-white font-outfit tracking-tight mb-1">Join Najah Tutors</h1>
+            <p class="text-slate-300 text-sm font-medium tracking-wide">Excellence starts with a single step.</p>
+        </div>
+
+        <div class="glass-panel p-6 md:p-8 rounded-[2.5rem] relative z-10 transition-all">
+            <form id="registrationForm" class="space-y-4">
+                <div id="formErrors"
+                    class="hidden bg-red-50 border-l-4 border-red-500 text-red-700 p-3 rounded-xl text-xs animate-shake mb-4">
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4 form-row" style="animation-delay: 0.1s;">
+                    <div class="space-y-1.5">
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">Full
+                            Name
+                            *</label>
+                        <input type="text" name="name" required
+                            class="w-full px-4 py-3 rounded-xl border-2 border-slate-100 bg-slate-50 focus:bg-white input-focus outline-none transition-all text-sm"
+                            placeholder="John Doe">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label
+                            class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">WhatsApp
+                            phone *</label>
+                        <input type="tel" name="phone" required
+                            class="w-full px-4 py-3 rounded-xl border-2 border-slate-100 bg-slate-50 focus:bg-white input-focus outline-none transition-all text-sm"
+                            placeholder="10-digit number">
+                    </div>
+                </div>
+
+                <div class="space-y-1.5 relative form-row" style="animation-delay: 0.2s;">
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">Email
+                        Address
+                        *</label>
+                    <div class="flex gap-2">
+                        <input type="email" id="regEmail" name="email" required
+                            class="flex-1 px-4 py-3 rounded-xl border-2 border-slate-100 bg-slate-50 focus:bg-white input-focus outline-none transition-all text-sm"
+                            placeholder="name@email.com">
+                        <button type="button" id="sendOtpBtn" onclick="sendVerificationOtp()"
+                            class="px-5 py-2 bg-[#0c213d] text-white text-[9px] font-bold rounded-lg hover:bg-black transition-all whitespace-nowrap">
+                            VERIFY EMAIL
+                        </button>
+                    </div>
+                    <!-- OTP elements kept same but smaller margins -->
+                    <div id="otpSection" class="hidden mt-2 p-3 bg-orange-50 rounded-xl border border-orange-100">
+                        <p class="text-[9px] font-bold text-orange-600 mb-1.5 uppercase tracking-tighter">Enter
+                            Verification Code</p>
+                        <div class="flex items-center gap-2">
+                            <input type="text" id="otpInput" maxlength="6"
+                                class="w-full px-3 py-2 border-2 border-orange-200 rounded-lg text-center font-bold tracking-[0.5em] focus:outline-none focus:border-orange-500 text-sm"
+                                placeholder="000000">
+                            <button type="button" onclick="verifyOtp()"
+                                class="bg-[#f7941d] text-white px-5 py-2.5 rounded-lg font-bold text-[10px] hover:shadow-lg transition-all">Submit</button>
+                        </div>
+                    </div>
+                    <div id="emailVerifiedBadge" class="hidden absolute right-3 top-[2.4rem]">
+                        <span
+                            class="bg-green-100 text-green-700 px-2.5 py-1 rounded-full text-[9px] font-bold flex items-center gap-1 shadow-sm">
+                            <i class="fas fa-check-circle"></i> VERIFIED
+                        </span>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4 form-row" style="animation-delay: 0.3s;">
+                    <div class="space-y-1.5">
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">Create
+                            Password *</label>
+                        <div class="relative">
+                            <input type="password" id="password" name="password" required
+                                class="w-full px-4 py-3 rounded-xl border-2 border-slate-100 bg-slate-50 focus:bg-white input-focus outline-none transition-all text-sm"
+                                placeholder="••••••••">
+                            <button type="button" onclick="togglePass('password')"
+                                class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"><i
+                                    class="fas fa-eye"></i></button>
+                        </div>
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">Confirm
+                            Password *</label>
+                        <div class="relative">
+                            <input type="password" id="confirmPassword" required
+                                class="w-full px-4 py-3 rounded-xl border-2 border-slate-100 bg-slate-50 focus:bg-white input-focus outline-none transition-all text-sm"
+                                placeholder="••••••••">
+                            <button type="button" onclick="togglePass('confirmPassword')"
+                                class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"><i
+                                    class="fas fa-eye"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-2 form-row" style="animation-delay: 0.4s;">
+                    <button type="submit" id="submitBtn" disabled
+                        class="w-full py-4 btn-gradient text-white rounded-[1.25rem] font-black text-base opacity-50 cursor-not-allowed">
+                        Create Account <i class="fas fa-user-plus ml-2"></i>
+                    </button>
+                </div>
+
+                <div class="text-center pt-4 border-t border-slate-100">
+                    <p class="text-xs text-slate-500">Already have an account? <a href="login.html"
+                            class="text-[#0c213d] font-bold hover:underline">Sign In</a></p>
+                </div>
+            </form>
+        </div>
+
+        <p class="text-center text-slate-300 text-[10px] mt-4 opacity-80">
+            By registering, you agree to our <a href="#" class="underline text-white hover:text-orange-400">Terms of
+                Service</a> and <a href="#" class="underline text-white hover:text-orange-400">Privacy Policy</a>.
+        </p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.js"></script>
+    <script>
+        const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:5000/api'
+            : '/api';
+
+        function showToast(message, type = 'info') {
+            const colors = { success: '#16a34a', error: '#dc2626', info: '#2563eb' };
+            Toastify({
+                text: message,
+                duration: 4000,
+                close: true,
+                gravity: 'top',
+                position: 'right',
+                style: { background: colors[type] || colors.info }
+            }).showToast();
+        }
+
+        let isEmailVerified = false;
+        let generatedOtp = null;
+
+        function togglePass(id) {
+            const el = document.getElementById(id);
+            el.type = el.type === 'password' ? 'text' : 'password';
+        }
+
+        function sendVerificationOtp() {
+            const email = document.getElementById('regEmail').value;
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showToast('Valid email required.', 'error');
+                return;
+            }
+
+            // Mock OTP
+            generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+            console.log('MOCK OTP:', generatedOtp);
+
+            showToast('Code sent to ' + email + ' (Mock: ' + generatedOtp + ')', 'success');
+            document.getElementById('otpSection').classList.remove('hidden');
+            document.getElementById('sendOtpBtn').classList.add('hidden');
+        }
+
+        function verifyOtp() {
+            const entered = document.getElementById('otpInput').value;
+            if (entered === generatedOtp) {
+                isEmailVerified = true;
+                showToast('Email verified!', 'success');
+                document.getElementById('otpSection').classList.add('hidden');
+                document.getElementById('emailVerifiedBadge').classList.remove('hidden');
+                document.getElementById('regEmail').readOnly = true;
+
+                const btn = document.getElementById('submitBtn');
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            } else {
+                showToast('Invalid code.', 'error');
+            }
+        }
+
+        document.getElementById('registrationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const errDiv = document.getElementById('formErrors');
+            errDiv.classList.add('hidden');
+
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+
+            if (data.password !== data.confirmPassword) {
+                errDiv.textContent = 'Passwords do not match.';
+                errDiv.classList.remove('hidden');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Creating Account...';
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await res.json();
+                if (res.ok) {
+                    showToast('Registration successful!', 'success');
+                    setTimeout(() => window.location.href = 'login.html', 1500);
+                } else {
+                    errDiv.textContent = result.message || 'Registration failed.';
+                    errDiv.classList.remove('hidden');
+                }
+            } catch (err) {
+                showToast('Connection error.', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Create Account <i class="fas fa-user-plus ml-2"></i>';
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,6 +1,7 @@
 const MarketingEnrollment = require('../models/MarketingEnrollment');
 const User = require('../models/User');
 const { sendWelcomeEmail } = require('../utils/emailService');
+const { sendWelcomeWhatsApp } = require('../utils/notificationService');
 
 // Generate random password
 const generateRandomPassword = (length = 12) => {
@@ -118,7 +119,7 @@ exports.createMarketingEnrollment = async (req, res) => {
       totalAmount
     });
 
-    // Send email with password if new user was created
+    // Send email and WhatsApp with password if new user was created
     if (generatedPassword) {
       try {
         console.log(`Attempting to send welcome email to ${email}...`);
@@ -130,8 +131,22 @@ exports.createMarketingEnrollment = async (req, res) => {
         // Don't fail the enrollment if email fails, but log it clearly
         console.log('⚠️ Enrollment saved but email was not sent. Password:', generatedPassword);
       }
+
+      // Send WhatsApp notification
+      try {
+        if (phone) {
+          console.log(`Attempting to send welcome WhatsApp to ${phone}...`);
+          await sendWelcomeWhatsApp(phone, studentName, generatedPassword);
+          console.log(`✅ Welcome WhatsApp sent successfully to ${phone}`);
+        }
+      } catch (whatsappError) {
+        console.error('❌ Failed to send WhatsApp:', whatsappError.message);
+        console.error('WhatsApp error details:', whatsappError);
+        // Don't fail the enrollment if WhatsApp fails
+        console.log('⚠️ Enrollment saved but WhatsApp was not sent.');
+      }
     } else {
-      console.log(`User ${email} already exists, no email sent`);
+      console.log(`User ${email} already exists, no email/WhatsApp sent`);
     }
 
     return res.status(201).json({

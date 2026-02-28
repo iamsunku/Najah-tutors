@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpeg" href="fav-icon.jpg">
+    <title>Student Registration - Najah Tutors</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <style>
+        :root {
+            --brand-navy: #0c213d;
+            --brand-orange: #f7941d;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        .font-outfit {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Premium Mesh Gradient Background */
+        .mesh-gradient {
+            background-color: #061121;
+            background-image:
+                radial-gradient(at 0% 0%, rgba(255, 153, 51, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(30, 58, 138, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(255, 153, 51, 0.08) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(30, 58, 138, 0.15) 0px, transparent 50%);
+            background-attachment: fixed;
+            animation: meshMove 20s ease infinite alternate;
+        }
+
+        @keyframes meshMove {
+            0% {
+                background-position: 0% 0%;
+            }
+
+            100% {
+                background-position: 15px 15px;
+            }
+        }
+
+        .floating-3d-bg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: -1;
+            filter: blur(40px);
+            animation: floatSlow 15s ease-in-out infinite;
+        }
+
+        @keyframes floatSlow {
+
+            0%,
+            100% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            50% {
+                transform: translate(-52%, -48%) rotate(3deg);
+            }
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.2);
+        }
+
+        .animate-fadeInUp {
+            animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="mesh-gradient relative overflow-x-hidden min-h-screen font-inter">
+    <!-- 3D Decorative Background Asset -->
+    <img src="premium_3d_education_abstract_1772098756918.png" class="floating-3d-bg" alt="">
+
+    <div class="min-h-screen flex items-center justify-center p-4 relative z-10 py-12">
+        <div class="w-full max-w-4xl">
+            <!-- Header -->
+            <div class="text-center mb-8 animate-fadeInUp">
+                <a href="live_classes.html">
+                    <img src="logo1.png" alt="Najah Tutors" class="h-14 w-auto mx-auto mb-6 logo-multiply scale-110">
+                </a>
+                <h1 class="text-4xl font-extrabold text-white mb-2 tracking-tight">Create Your Account</h1>
+                <p class="text-slate-400">Join thousands of students in the GCC & India region.</p>
+            </div>
+
+            <div class="glass-panel p-8 md:p-12 rounded-[2.5rem] animate-fadeInUp" style="animation-delay: 0.1s;">
+                <div id="alert-container" class="mb-6 hidden"></div>
+
+                <form id="signupForm" class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Full Name -->
+                        <div class="space-y-2">
+                            <label class="block text-sm font-bold text-slate-700 ml-1">Full Name *</label>
+                            <div class="relative group">
+                                <span
+                                    class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 group-focus-within:text-blue-900 transition-colors">
+                                    <i class="fas fa-user text-sm"></i>
+                                </span>
+                                <input type="text" id="fullName" required placeholder="John Doe"
+                                    class="input-focus w-full pl-11 pr-4 py-3.5 bg-white border border-slate-200 rounded-2xl outline-none transition-all text-slate-700" />
+                            </div>
+                        </div>
+
+                        <!-- Email Address -->
+                        <div class="space-y-2">
+                            <label class="block text-sm font-bold text-slate-700 ml-1">Email Address *</label>
+                            <div class="relative group">
+                                <span
+                                    class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 group-focus-within:text-blue-900 transition-colors">
+                                    <i class="fas fa-envelope text-sm"></i>
+                                </span>
+                                <input type="email" id="email" required placeholder="john@example.com"
+                                    class="input-focus w-full pl-11 pr-4 py-3.5 bg-white border border-slate-200 rounded-2xl outline-none transition-all text-slate-700" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Password -->
+                        <div class="space-y-2">
+                            <label class="block text-sm font-bold text-slate-700 ml-1">Password *</label>
+                            <div class="relative group">
+                                <span
+                                    class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 group-focus-within:text-blue-900 transition-colors">
+                                    <i class="fas fa-lock text-sm"></i>
+                                </span>
+                                <input type="password" id="password" required placeholder="••••••••"
+                                    class="input-focus w-full pl-11 pr-12 py-3.5 bg-white border border-slate-200 rounded-2xl outline-none transition-all text-slate-700" />
+                                <button type="button" id="togglePassword"
+                                    class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-blue-900 transition-colors">
+                                    <i class="fas fa-eye text-sm" id="eyeIcon"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div class="space-y-2">
+                            <label class="block text-sm font-bold text-slate-700 ml-1">Phone Number *</label>
+                            <div class="relative group">
+                                <input type="tel" id="phoneNumber" required
+                                    class="input-focus w-full pl-16 pr-4 py-3.5 bg-white border border-slate-200 rounded-2xl outline-none transition-all text-slate-700" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <!-- Country -->
+                        <div class="space-y-2">
+                            <label class="block text-sm font-bold text-slate-700 ml-1">Country *</label>
+                            <select id="country" required
+                                class="input-focus w-full px-4 py-3.5 bg-white border border-slate-200 rounded-2xl outline-none transition-all text-slate-700 appearance-none">
+                                <option value="">Select Country</option>
+                                <option value="Kuwait">Kuwait</option>
+                                <option value="UAE">UAE</option>
+                                <option value="Qatar">Qatar</option>
+                                <option value="Oman">Oman</option>
+                                <option value="Bahrain">Bahrain</option>
+                                <option value="Saudi Arabia">Saudi Arabia</option>
+                                <option value="India">India</option>
+                            </select>
+                        </div>
+
+                        <!-- Grade -->
+                        <div class="space-y-2">
+                            <label class="block text-sm font-bold text-slate-700 ml-1">Grade *</label>
+                            <select id="grade" required
+                                class="input-focus w-full px-4 py-3.5 bg-white border border-slate-200 rounded-2xl outline-none transition-all text-slate-700 appearance-none">
+                                <option value="">Select Grade</option>
+                                <option value="Grade 8">Grade 8</option>
+                                <option value="Grade 9">Grade 9</option>
+                                <option value="Grade 10">Grade 10</option>
+                                <option value="Grade 11">Grade 11</option>
+                                <option value="Grade 12">Grade 12</option>
+                            </select>
+                        </div>
+
+                        <!-- Board -->
+                        <div class="space-y-2">
+                            <label class="block text-sm font-bold text-slate-700 ml-1">Curriculum / Board *</label>
+                            <select id="board" required
+                                class="input-focus w-full px-4 py-3.5 bg-white border border-slate-200 rounded-2xl outline-none transition-all text-slate-700 appearance-none">
+                                <option value="">Select Board</option>
+                                <option value="CBSE">CBSE</option>
+                                <option value="ICSE">ICSE</option>
+                                <option value="IGCSE">IGCSE (International)</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="pt-4">
+                        <button type="submit" id="signupBtn"
+                            class="btn-premium w-full text-white py-4 rounded-2xl font-bold flex items-center justify-center space-x-2 shadow-lg shadow-blue-900/10">
+                            <span>Complete Registration</span>
+                            <i class="fas fa-arrow-right text-sm"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <div class="mt-8 pt-8 border-t border-slate-100 text-center">
+                    <p class="text-slate-500 text-sm">
+                        Already have an account?
+                        <a href="login.html" class="text-blue-900 font-bold hover:underline underline-offset-4 ml-1">Log
+                            In</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Trust Indicators -->
+            <div class="mt-12 flex flex-wrap justify-center items-center gap-8 opacity-40 grayscale">
+                <img src="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg" class="h-6 w-auto"
+                    alt="India">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/aa/Flag_of_Kuwait.svg" class="h-6 w-auto"
+                    alt="Kuwait">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Flag_of_the_United_Arab_Emirates.svg"
+                    class="h-6 w-auto" alt="UAE">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Flag_of_Oman.svg" class="h-6 w-auto"
+                    alt="Oman">
+            </div>
+        </div>
+    </div>
+
+    <!-- Small & Neat Footer -->
+    <footer class="bg-white border-t border-slate-100 py-6 text-[10px] relative z-10 mt-auto w-full">
+        <div
+            class="max-w-4xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-400 font-medium">
+            <div class="flex items-center space-x-6">
+                <img src="logo1.png" alt="Najah Tutors"
+                    class="h-6 w-auto opacity-50 grayscale hover:grayscale-0 transition-all logo-multiply">
+                <span>&copy; 2026 Najah Tutors</span>
+            </div>
+            <div class="flex items-center space-x-8">
+                <a href="live_classes.html" class="hover:text-blue-900 transition-colors">Home</a>
+                <a href="#" class="hover:text-blue-900 transition-colors">Terms</a>
+                <a href="#" class="hover:text-blue-900 transition-colors">Privacy</a>
+                <span class="text-slate-200">|</span>
+                <span class="flex items-center gap-2">
+                    <i class="fas fa-headset text-orange-500/50"></i> Support: 080-42108882
+                </span>
+            </div>
+            <div class="opacity-50">
+                Powered by <span class="font-bold text-slate-600">KamGlobalAI</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:5000/api'
+            : '/api';
+
+        const signupForm = document.getElementById('signupForm');
+        const signupBtn = document.getElementById('signupBtn');
+        const alertContainer = document.getElementById('alert-container');
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
+        const phoneInput = document.getElementById('phoneNumber');
+
+        // Password Toggle
+        togglePassword.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            eyeIcon.classList.toggle('fa-eye');
+            eyeIcon.classList.toggle('fa-eye-slash');
+        });
+
+        // Initialize International Telephone Input
+        const iti = window.intlTelInput(phoneInput, {
+            initialCountry: "auto",
+            geoIpLookup: function (success, failure) {
+                fetch('https://ipapi.co/json/')
+                    .then(res => res.json())
+                    .then(data => success(data.country_code))
+                    .catch(() => success("ae"));
+            },
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+            preferredCountries: ["ae", "in", "kw", "qa", "om", "bh", "sa"]
+        });
+
+        // Auto-detect country based on IP (Dummy for now, can use ip-api.com)
+        async function detectCountry() {
+            try {
+                const res = await fetch('https://ipapi.co/json/');
+                const data = await res.json();
+                if (data.country_name) {
+                    const countrySelect = document.getElementById('country');
+                    for (let option of countrySelect.options) {
+                        if (option.value.toLowerCase() === data.country_name.toLowerCase()) {
+                            option.selected = true;
+                            break;
+                        }
+                    }
+                }
+            } catch (e) { console.log('Country detection failed'); }
+        }
+        detectCountry();
+
+        const showAlert = (message, type = 'error') => {
+            const bgColor = type === 'error' ? 'bg-red-50' : 'bg-green-50';
+            const borderColor = type === 'error' ? 'border-red-200' : 'border-green-200';
+            const textColor = type === 'error' ? 'text-red-700' : 'text-green-700';
+
+            alertContainer.innerHTML = `
+                <div class="${bgColor} border-l-4 ${borderColor} ${textColor} p-4 rounded-xl flex items-center space-x-3 transition-all animate-pulse text-sm">
+                    <i class="fas ${type === 'error' ? 'fa-exclamation-circle' : 'fa-check-circle'}"></i>
+                    <p class="font-semibold">${message}</p>
+                </div>
+            `;
+            alertContainer.classList.remove('hidden');
+        };
+
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            alertContainer.classList.add('hidden');
+            signupBtn.disabled = true;
+            signupBtn.innerHTML = '<span>Creating Account...</span><i class="fas fa-circle-notch fa-spin text-sm"></i>';
+
+            const payload = {
+                name: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                phone: document.getElementById('phoneNumber').value,
+                country: document.getElementById('country').value,
+                grade: document.getElementById('grade').value,
+                board: document.getElementById('board').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                let data;
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                    data = await response.json();
+                } else {
+                    const text = await response.text();
+                    throw new Error(text || 'Server returned an invalid response');
+                }
+
+                if (!response.ok) {
+                    throw new Error(data.message || 'Registration failed');
+                }
+
+                // Show verification and success state
+                showAlert('Registration successful! A verification link has been sent to your email. Redirecting to login...', 'success');
+                signupForm.reset();
+                setTimeout(() => { window.location.href = 'login.html'; }, 3500);
+
+            } catch (error) {
+                console.error('Registration Error:', error);
+                const errorMsg = error.name === 'TypeError' ? 'Server is currently unreachable. Please check your connection or try again later.' : error.message;
+                showAlert(errorMsg);
+                signupBtn.disabled = false;
+                signupBtn.innerHTML = '<span>Complete Registration</span><i class="fas fa-arrow-right text-sm"></i>';
+            }
+        });
+    </script>
+</body>
+
+</html>
