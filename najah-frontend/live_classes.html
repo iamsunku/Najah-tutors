@@ -454,7 +454,6 @@
             </a>
             <div class="hidden md:flex items-center gap-0.5">
                 <a href="#home" class="nav-lnk active">Home</a>
-                <a href="#courses" class="nav-lnk">Courses</a>
                 <a href="#features" class="nav-lnk">Features</a>
                 <a href="#about" class="nav-lnk">About</a>
                 <a href="contact.html" class="nav-lnk">Contact</a>
@@ -469,7 +468,6 @@
         </div>
         <div id="mob-menu" class="flex-col gap-1 pb-3 md:hidden">
             <a href="#home" class="nav-lnk block">Home</a>
-            <a href="#courses" class="nav-lnk block">Courses</a>
             <a href="#features" class="nav-lnk block">Features</a>
             <a href="#about" class="nav-lnk block">About</a>
             <a href="contact.html" class="nav-lnk block">Contact</a>
@@ -480,15 +478,15 @@
 
 
     <!-- ══════════════════ HERO DUAL SLIDER ══════════════════ -->
-    <section id="home" class="hero-slider-wrap pt-20">
+    <section id="home" class="hero-slider-wrap pt-32 pb-12 md:pt-44 md:pb-20">
         <div class="slider-track" id="sliderTrack">
 
             <!-- Slide 1: Global Expansion (Najah Tutors) -->
-            <div class="slide"
-                style="background: linear-gradient(135deg,#020617 0%,#0f172a 40%,#1e293b 70%,#0c213d 100%);">
-                <div class="absolute inset-0 opacity-40 mix-blend-overlay"
-                    style="background: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;">
+            <div class="slide" style="background: #020617;">
+                <div class="absolute inset-0 opacity-60"
+                    style="background: url('hero_global.png') center/cover no-repeat;">
                 </div>
+                <div class="absolute inset-0 bg-gradient-to-b from-[#020617]/80 via-transparent to-[#020617]/80"></div>
                 <div
                     class="absolute top-[-50px] left-[10%] w-[300px] h-[300px] bg-orange-500/10 rounded-full blur-[90px]">
                 </div>
@@ -511,13 +509,13 @@
                                 </div>
                                 <div
                                     class="flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-3 py-1.5 text-xs text-white">
-                                    <i class="fas fa-clock text-blue-400"></i> Multiple Time Zones
+                                    <i class="fas fa-clock text-orange-400"></i> Multiple Time Zones
                                 </div>
                             </div>
                             <div class="flex flex-wrap gap-3">
-                                <button onclick="openEnrollForm()"
-                                    class="bg-[#f7941d] text-white font-bold px-7 py-3 rounded-full text-sm hover:shadow-xl transition transform hover:-translate-y-1">Start
-                                    Global Learning <i class="fas fa-globe ml-2"></i></button>
+                                <a href="register.html"
+                                    class="bg-[#f7941d] text-white font-bold px-7 py-3 rounded-full text-sm hover:shadow-xl transition transform hover:-translate-y-1">Register
+                                    Now <i class="fas fa-arrow-right ml-1"></i></a>
                                 <a href="#about"
                                     class="bg-white/10 text-white px-7 py-3 rounded-full text-sm font-semibold hover:bg-white/20 transition backdrop-blur-sm">Our
                                     Vision</a>
@@ -533,7 +531,7 @@
                             </div>
                             <div
                                 class="bg-white/5 backdrop-blur-md border border-white/10 p-6 rounded-[2rem] text-center">
-                                <i class="fas fa-handshake text-3xl text-blue-400 mb-4"></i>
+                                <i class="fas fa-handshake text-3xl text-orange-400 mb-4"></i>
                                 <h4 class="text-white font-bold text-sm">Global Partners</h4>
                                 <p class="text-gray-400 text-[10px] mt-2">Collaborating with top institutions worldwide.
                                 </p>
@@ -544,13 +542,13 @@
             </div>
 
             <!-- Slide 2: IGCSE & A-Level -->
-            <div class="slide"
-                style="background: linear-gradient(135deg,#0c1a0c 0%,#052e16 40%,#064e3b 70%,#0f3460 100%);">
-                <div
-                    class="absolute top-[-80px] right-[-80px] w-[350px] h-[350px] bg-emerald-600/20 rounded-full blur-[80px]">
+            <div class="slide" style="background: #020617;">
+                <div class="absolute inset-0 opacity-60"
+                    style="background: url('hero_igcse.png') center/cover no-repeat;">
                 </div>
+                <div class="absolute inset-0 bg-gradient-to-b from-[#020617]/80 via-transparent to-[#020617]/80"></div>
                 <div
-                    class="absolute bottom-[-60px] left-[-60px] w-[250px] h-[250px] bg-teal-500/20 rounded-full blur-[60px]">
+                    class="absolute top-[-80px] right-[-80px] w-[350px] h-[350px] bg-orange-500/10 rounded-full blur-[80px]">
                 </div>
                 <div class="slide-content">
                     <div class="grid md:grid-cols-2 gap-10 items-center">
@@ -558,7 +556,7 @@
                             <span class="slide-badge">🌍 International Curriculum</span>
                             <h1 class="text-3xl md:text-5xl font-extrabold text-white leading-tight mb-3">
                                 <span
-                                    class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-teal-300">IGCSE</span>
+                                    class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-300">IGCSE</span>
                                 &amp; A-Level<br>Live Classes
                             </h1>
                             <p class="text-gray-300 text-sm md:text-base mb-5 max-w-md">Cambridge-aligned live sessions
@@ -567,58 +565,55 @@
                             <div class="flex flex-wrap gap-3 mb-6">
                                 <div
                                     class="flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-3 py-1.5 text-xs text-white">
-                                    <i class="fas fa-globe text-emerald-300"></i> Global Students Welcome
+                                    <i class="fas fa-globe text-orange-400"></i> Global Students Welcome
                                 </div>
                                 <div
                                     class="flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-3 py-1.5 text-xs text-white">
-                                    <i class="fas fa-award text-teal-300"></i> Cambridge Aligned
+                                    <i class="fas fa-award text-orange-400"></i> Cambridge Aligned
                                 </div>
                                 <div
                                     class="flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-3 py-1.5 text-xs text-white">
-                                    <i class="fas fa-comments text-blue-300"></i> 1-on-1 Mentorship
+                                    <i class="fas fa-comments text-orange-400"></i> 1-on-1 Mentorship
                                 </div>
                             </div>
                             <div class="flex flex-wrap gap-3">
-                                <button onclick="openEnrollForm()"
-                                    class="bg-gradient-to-r from-emerald-400 to-teal-500 text-gray-900 font-bold px-7 py-3 rounded-full text-sm hover:shadow-xl transition transform hover:-translate-y-1">Enroll
-                                    in IGCSE <i class="fas fa-arrow-right ml-1"></i></button>
-                                <a href="#courses"
-                                    class="border border-white/40 text-white px-7 py-3 rounded-full text-sm font-semibold hover:bg-white/10 transition">Explore
-                                    Courses</a>
+                                <a href="register.html"
+                                    class="bg-[#f7941d] text-white font-bold px-7 py-3 rounded-full text-sm hover:shadow-xl transition transform hover:-translate-y-1">Register
+                                    Now <i class="fas fa-arrow-right ml-1"></i></a>
                             </div>
                         </div>
                         <div class="hidden md:flex flex-col gap-3">
                             <div class="bg-white/10 border border-white/20 rounded-2xl p-5 backdrop-blur">
-                                <p class="text-emerald-300 text-xs font-bold uppercase tracking-widest mb-3">IGCSE
+                                <p class="text-orange-300 text-xs font-bold uppercase tracking-widest mb-3">IGCSE
                                     Programs Offered</p>
                                 <div class="space-y-2">
                                     <div class="flex items-center gap-2 text-sm text-white"><i
-                                            class="fas fa-check-circle text-emerald-400"></i> Mathematics &amp; Further
+                                            class="fas fa-check-circle text-orange-400"></i> Mathematics &amp; Further
                                         Math</div>
                                     <div class="flex items-center gap-2 text-sm text-white"><i
-                                            class="fas fa-check-circle text-emerald-400"></i> Physics, Chemistry,
+                                            class="fas fa-check-circle text-orange-400"></i> Physics, Chemistry,
                                         Biology</div>
                                     <div class="flex items-center gap-2 text-sm text-white"><i
-                                            class="fas fa-check-circle text-emerald-400"></i> English Language &amp;
+                                            class="fas fa-check-circle text-orange-400"></i> English Language &amp;
                                         Literature</div>
                                     <div class="flex items-center gap-2 text-sm text-white"><i
-                                            class="fas fa-check-circle text-emerald-400"></i> AS &amp; A Level
+                                            class="fas fa-check-circle text-orange-400"></i> AS &amp; A Level
                                         Preparation</div>
                                     <div class="flex items-center gap-2 text-sm text-white"><i
-                                            class="fas fa-check-circle text-emerald-400"></i> Global Perspectives</div>
+                                            class="fas fa-check-circle text-orange-400"></i> Global Perspectives</div>
                                 </div>
                             </div>
                             <div class="grid grid-cols-3 gap-2">
-                                <div class="bg-emerald-400/20 rounded-xl p-3 text-center border border-emerald-400/30">
-                                    <p class="text-xl font-black text-emerald-300">8–12</p>
+                                <div class="bg-orange-400/10 rounded-xl p-3 text-center border border-orange-400/20">
+                                    <p class="text-xl font-black text-orange-400">8–12</p>
                                     <p class="text-[10px] text-gray-300">Grades</p>
                                 </div>
-                                <div class="bg-teal-400/20 rounded-xl p-3 text-center border border-teal-400/30">
-                                    <p class="text-xl font-black text-teal-300">30+</p>
+                                <div class="bg-orange-400/10 rounded-xl p-3 text-center border border-orange-400/20">
+                                    <p class="text-xl font-black text-orange-400">30+</p>
                                     <p class="text-[10px] text-gray-300">Countries</p>
                                 </div>
-                                <div class="bg-blue-400/20 rounded-xl p-3 text-center border border-blue-400/30">
-                                    <p class="text-xl font-black text-blue-300">A*</p>
+                                <div class="bg-orange-400/10 rounded-xl p-3 text-center border border-orange-400/20">
+                                    <p class="text-xl font-black text-orange-400">A*</p>
                                     <p class="text-[10px] text-gray-300">Results</p>
                                 </div>
                             </div>
@@ -628,16 +623,16 @@
             </div>
 
             <!-- Slide 3: NEET Crash Course -->
-            <div class="slide"
-                style="background: linear-gradient(135deg,#0f172a 0%,#1e1b4b 40%,#312e81 70%,#1e3a5f 100%);">
+            <div class="slide" style="background: #020617;">
+                <div class="absolute inset-0 opacity-60"
+                    style="background: url('hero_neet.png') center/cover no-repeat;">
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-b from-[#020617]/80 via-transparent to-[#020617]/80"></div>
                 <div class="slide-overlay"
-                    style="background:url('data:image/svg+xml,%3Csvg width=60 height=60 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Ccircle cx=30 cy=30 r=1.5 fill=%22white%22 fill-opacity=.06/%3E%3C/svg%3E');">
+                    style="background:url('data:image/svg+xml,%3Csvg width=60 height=60 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Ccircle cx=30 cy=30 r=1.5 fill=%22white%22 fill-opacity=.04/%3E%3C/svg%3E');">
                 </div>
                 <div
-                    class="absolute top-[-80px] right-[-80px] w-[350px] h-[350px] bg-indigo-600/20 rounded-full blur-[80px]">
-                </div>
-                <div
-                    class="absolute bottom-[-60px] left-[-60px] w-[250px] h-[250px] bg-blue-500/20 rounded-full blur-[60px]">
+                    class="absolute top-[-80px] right-[-80px] w-[350px] h-[350px] bg-orange-600/10 rounded-full blur-[80px]">
                 </div>
                 <div class="slide-content">
                     <div class="grid md:grid-cols-2 gap-10 items-center">
@@ -645,7 +640,7 @@
                             <span class="slide-badge">🔥 Limited Seats Available</span>
                             <h1 class="text-3xl md:text-5xl font-extrabold text-white leading-tight mb-3">
                                 NEET <span
-                                    class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-400">Crash
+                                    class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-300">Crash
                                     Course</span><br>2025–26
                             </h1>
                             <p class="text-gray-300 text-sm md:text-base mb-5 max-w-md">Intensive 90-day live program by
@@ -654,59 +649,57 @@
                             <div class="flex flex-wrap gap-3 mb-6">
                                 <div
                                     class="flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-3 py-1.5 text-xs text-white">
-                                    <i class="fas fa-calendar-alt text-yellow-300"></i> Starts 1 March 2026
+                                    <i class="fas fa-calendar-alt text-orange-400"></i> Starts 1 March 2026
                                 </div>
                                 <div
                                     class="flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-3 py-1.5 text-xs text-white">
-                                    <i class="fas fa-clock text-green-300"></i> 3 hrs / day Live
+                                    <i class="fas fa-clock text-orange-400"></i> 3 hrs / day Live
                                 </div>
                                 <div
                                     class="flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-3 py-1.5 text-xs text-white">
-                                    <i class="fas fa-users text-blue-300"></i> Limited to 50 students
+                                    <i class="fas fa-users text-orange-400"></i> Limited to 50 students
                                 </div>
                             </div>
                             <div class="flex flex-wrap gap-3">
-                                <button onclick="openEnrollForm()"
-                                    class="bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 font-bold px-7 py-3 rounded-full text-sm hover:shadow-xl transition transform hover:-translate-y-1">Enroll
-                                    in NEET Crash <i class="fas fa-arrow-right ml-1"></i></button>
-                                <a href="#courses"
-                                    class="border border-white/40 text-white px-7 py-3 rounded-full text-sm font-semibold hover:bg-white/10 transition">View
-                                    Schedule</a>
+                                <a href="register.html"
+                                    class="bg-[#f7941d] text-white font-bold px-7 py-3 rounded-full text-sm hover:shadow-xl transition transform hover:-translate-y-1">Register
+                                    Now <i class="fas fa-arrow-right ml-1"></i></a>
                             </div>
                         </div>
                         <div class="hidden md:flex flex-col gap-3">
                             <div class="bg-white/10 border border-white/20 rounded-2xl p-5 backdrop-blur">
-                                <p class="text-yellow-300 text-xs font-bold uppercase tracking-widest mb-3">NEET 2026
+                                <p class="text-orange-300 text-xs font-bold uppercase tracking-widest mb-3">NEET 2026
                                     Subjects</p>
                                 <div class="space-y-2">
                                     <div class="flex items-center gap-2 text-sm text-white"><i
-                                            class="fas fa-check-circle text-green-400"></i> Biology – Full NCERT
+                                            class="fas fa-check-circle text-orange-400"></i> Biology – Full NCERT
                                         Coverage</div>
                                     <div class="flex items-center gap-2 text-sm text-white"><i
-                                            class="fas fa-check-circle text-green-400"></i> Physics – Concept + PYQs
+                                            class="fas fa-check-circle text-orange-400"></i> Physics – Concept + PYQs
                                     </div>
                                     <div class="flex items-center gap-2 text-sm text-white"><i
-                                            class="fas fa-check-circle text-green-400"></i> Chemistry – Organic +
+                                            class="fas fa-check-circle text-orange-400"></i> Chemistry – Organic +
                                         Inorganic</div>
                                     <div class="flex items-center gap-2 text-sm text-white"><i
-                                            class="fas fa-check-circle text-green-400"></i> Weekly Mock Tests + Revision
+                                            class="fas fa-check-circle text-orange-400"></i> Weekly Mock Tests +
+                                        Revision
                                     </div>
                                     <div class="flex items-center gap-2 text-sm text-white"><i
-                                            class="fas fa-check-circle text-green-400"></i> Recorded Sessions Included
+                                            class="fas fa-check-circle text-orange-400"></i> Recorded Sessions Included
                                     </div>
                                 </div>
                             </div>
                             <div class="grid grid-cols-3 gap-2">
-                                <div class="bg-yellow-400/20 rounded-xl p-3 text-center border border-yellow-400/30">
-                                    <p class="text-xl font-black text-yellow-300">90</p>
+                                <div class="bg-orange-400/10 rounded-xl p-3 text-center border border-orange-400/20">
+                                    <p class="text-xl font-black text-orange-400">90</p>
                                     <p class="text-[10px] text-gray-300">Days Program</p>
                                 </div>
-                                <div class="bg-green-400/20 rounded-xl p-3 text-center border border-green-400/30">
-                                    <p class="text-xl font-black text-green-300">98%</p>
+                                <div class="bg-orange-400/10 rounded-xl p-3 text-center border border-orange-400/20">
+                                    <p class="text-xl font-black text-orange-400">98%</p>
                                     <p class="text-[10px] text-gray-300">Pass Rate</p>
                                 </div>
-                                <div class="bg-blue-400/20 rounded-xl p-3 text-center border border-blue-400/30">
-                                    <p class="text-xl font-black text-blue-300">5K+</p>
+                                <div class="bg-orange-400/10 rounded-xl p-3 text-center border border-orange-400/20">
+                                    <p class="text-xl font-black text-orange-400">5K+</p>
                                     <p class="text-[10px] text-gray-300">Students</p>
                                 </div>
                             </div>
@@ -876,9 +869,9 @@
                         <div
                             class="mt-8 p-5 bg-gradient-to-r from-[#0c213d] to-[#1e3a5f] rounded-2xl flex items-center justify-between">
                             <p class="text-white font-bold text-sm">Join our global community</p>
-                            <button onclick="openEnrollForm()"
+                            <a href="register.html"
                                 class="bg-[#f7941d] text-white px-4 py-2 rounded-xl text-xs font-bold hover:scale-105 transition">Register
-                                Now</button>
+                                Now</a>
                         </div>
                     </div>
                 </div>
@@ -942,232 +935,7 @@
         </div>
     </section>
 
-    <!-- Courses Section -->
-    <section id="courses" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-10 scroll-animate">
-                <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Available Courses</h2>
-                <p class="text-sm text-gray-600">Choose your board and explore our courses</p>
-            </div>
 
-            <!-- Board Tabs -->
-            <div class="flex justify-center mb-10">
-                <div class="inline-flex bg-white rounded-full shadow-lg p-2">
-                    <button onclick="switchBoard('igcse')" id="igcse-tab"
-                        class="board-tab active px-6 py-2 rounded-full font-bold text-sm transition-all duration-300">
-                        IGCSE
-                    </button>
-                    <button onclick="switchBoard('neet')" id="neet-tab"
-                        class="board-tab px-6 py-2 rounded-full font-bold text-sm transition-all duration-300">
-                        NEET
-                    </button>
-                </div>
-            </div>
-
-            <!-- IGCSE Content -->
-            <div id="igcse-content" class="board-content">
-                <!-- Grade 9th IGCSE -->
-                <div class="mb-20">
-                    <h3 class="text-2xl font-bold text-[#0c213d] mb-8 text-center scroll-animate">Grade 9th - IGCSE</h3>
-                    <div id="igcse-9-grid" class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <!-- Physics Card -->
-                        <div
-                            class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover scroll-animate border border-slate-50">
-                            <div class="h-48 relative">
-                                <img src="https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=400"
-                                    alt="Physics Course" class="w-full h-full object-cover">
-                            </div>
-                            <div class="p-8">
-                                <h4 class="text-xl font-bold text-[#0c213d] mb-4">Physics</h4>
-                                <div class="space-y-3 mb-6">
-                                    <p class="text-sm text-gray-500"><i
-                                            class="fas fa-calendar-alt text-[#f7941d] mr-2"></i> Duration: 180 Days</p>
-                                    <p class="text-sm text-gray-500"><i
-                                            class="fas fa-calendar-week text-[#f7941d] mr-2"></i> Days: Mon, Wed, Fri
-                                    </p>
-                                    <p class="text-sm text-gray-500"><i class="fas fa-clock text-[#f7941d] mr-2"></i>
-                                        Time: 4:00 PM - 5:30 PM</p>
-                                </div>
-                                <div class="flex items-center justify-between pt-4 border-t border-slate-50">
-                                    <div class="flex flex-col">
-                                        <span class="text-2xl font-black text-[#0c213d]">₹4,999</span>
-                                        <span class="text-gray-400 line-through text-xs font-bold">₹7,999</span>
-                                    </div>
-                                    <input type="checkbox"
-                                        class="subject-select w-7 h-7 text-[#f7941d] rounded-xl border-2 border-slate-200 focus:ring-[#f7941d]"
-                                        data-subject="Physics" data-class="9" data-board="IGCSE" data-price="4999">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Chemistry Card -->
-                        <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover scroll-animate border border-slate-50"
-                            style="animation-delay: 0.1s;">
-                            <div class="h-48 relative">
-                                <img src="https://images.unsplash.com/photo-1603126857599-f6e157fa2fe6?w=400"
-                                    alt="Chemistry Course" class="w-full h-full object-cover">
-                            </div>
-                            <div class="p-8">
-                                <h4 class="text-xl font-bold text-[#0c213d] mb-4">Chemistry</h4>
-                                <div class="space-y-3 mb-6">
-                                    <p class="text-sm text-gray-500"><i
-                                            class="fas fa-calendar-alt text-purple-600 mr-2"></i> Duration: 180 Days</p>
-                                    <p class="text-sm text-gray-500"><i
-                                            class="fas fa-calendar-week text-purple-600 mr-2"></i> Days: Tue, Thu, Sat
-                                    </p>
-                                    <p class="text-sm text-gray-500"><i class="fas fa-clock text-purple-600 mr-2"></i>
-                                        Time: 5:30 PM - 7:00 PM</p>
-                                </div>
-                                <div class="flex items-center justify-between pt-4 border-t border-slate-50">
-                                    <div class="flex flex-col">
-                                        <span class="text-2xl font-black text-purple-600">₹4,999</span>
-                                        <span class="text-gray-400 line-through text-xs font-bold">₹7,999</span>
-                                    </div>
-                                    <input type="checkbox"
-                                        class="subject-select w-7 h-7 text-purple-600 rounded-xl border-2 border-slate-200 focus:ring-purple-500"
-                                        data-subject="Chemistry" data-class="9" data-board="IGCSE" data-price="4999">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Biology Card -->
-                        <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover scroll-animate border border-slate-50"
-                            style="animation-delay: 0.2s;">
-                            <div class="h-48 relative">
-                                <img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?w=400"
-                                    alt="Biology Course" class="w-full h-full object-cover">
-                            </div>
-                            <div class="p-8">
-                                <h4 class="text-xl font-bold text-[#0c213d] mb-4">Biology</h4>
-                                <div class="space-y-3 mb-6">
-                                    <p class="text-sm text-gray-500"><i
-                                            class="fas fa-calendar-alt text-green-600 mr-2"></i> Duration: 180 Days</p>
-                                    <p class="text-sm text-gray-500"><i
-                                            class="fas fa-calendar-week text-green-600 mr-2"></i> Days: Mon, Wed, Fri
-                                    </p>
-                                    <p class="text-sm text-gray-500"><i class="fas fa-clock text-green-600 mr-2"></i>
-                                        Time: 7:00 PM - 8:30 PM</p>
-                                </div>
-                                <div class="flex items-center justify-between pt-4 border-t border-slate-50">
-                                    <div class="flex flex-col">
-                                        <span class="text-2xl font-black text-green-600">₹4,999</span>
-                                        <span class="text-gray-400 line-through text-xs font-bold">₹7,999</span>
-                                    </div>
-                                    <input type="checkbox"
-                                        class="subject-select w-7 h-7 text-green-600 rounded-xl border-2 border-slate-200 focus:ring-green-500"
-                                        data-subject="Biology" data-class="9" data-board="IGCSE" data-price="4999">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Math Card -->
-                        <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover scroll-animate border border-slate-50"
-                            style="animation-delay: 0.3s;">
-                            <div class="h-48 relative">
-                                <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400"
-                                    alt="Math Course" class="w-full h-full object-cover">
-                            </div>
-                            <div class="p-8">
-                                <h4 class="text-xl font-bold text-[#0c213d] mb-4">Mathematics</h4>
-                                <div class="space-y-3 mb-6">
-                                    <p class="text-sm text-gray-500"><i
-                                            class="fas fa-calendar-alt text-orange-600 mr-2"></i> Duration: 180 Days</p>
-                                    <p class="text-sm text-gray-500"><i
-                                            class="fas fa-calendar-week text-orange-600 mr-2"></i> Days: Tue, Thu, Sat
-                                    </p>
-                                    <p class="text-sm text-gray-500"><i class="fas fa-clock text-orange-600 mr-2"></i>
-                                        Time: 4:00 PM - 5:30 PM</p>
-                                </div>
-                                <div class="flex items-center justify-between pt-4 border-t border-slate-50">
-                                    <div class="flex flex-col">
-                                        <span class="text-2xl font-black text-orange-600">₹4,999</span>
-                                        <span class="text-gray-400 line-through text-xs font-bold">₹7,999</span>
-                                    </div>
-                                    <input type="checkbox"
-                                        class="subject-select w-7 h-7 text-orange-600 rounded-xl border-2 border-slate-200 focus:ring-orange-500"
-                                        data-subject="Mathematics" data-class="9" data-board="IGCSE" data-price="4999">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- NEET Content -->
-            <div id="neet-content" class="board-content hidden">
-                <div class="mb-16">
-                    <h3 class="text-2xl font-bold text-[#0c213d] mb-8 text-center scroll-animate">NEET Preparation -
-                        2026</h3>
-                    <div id="neet-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
-                        <!-- Biology NEET -->
-                        <div
-                            class="bg-white rounded-2xl overflow-hidden shadow-2xl card-hover scroll-animate border border-slate-50">
-                            <div class="h-56 relative">
-                                <img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?w=400"
-                                    alt="NEET Biology" class="w-full h-full object-cover">
-                            </div>
-                            <div class="p-10">
-                                <h4 class="text-2xl font-black text-[#0c213d] mb-4">NEET Biology</h4>
-                                <p class="text-sm text-gray-500 mb-6">Comprehensive coverage of NCERT Zoology & Botany
-                                    with rank booster sessions.</p>
-                                <div class="flex items-center justify-between pt-6 border-t border-slate-100">
-                                    <div class="flex flex-col"><span
-                                            class="text-3xl font-black text-[#f7941d]">₹6,499</span><span
-                                            class="text-gray-400 line-through text-xs font-bold">₹9,999</span></div>
-                                    <input type="checkbox"
-                                        class="subject-select w-8 h-8 text-[#f7941d] rounded-2xl border-2 border-slate-200 focus:ring-[#f7941d]"
-                                        data-subject="NEET Biology" data-class="NEET" data-board="NEET"
-                                        data-price="6499">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Physics NEET -->
-                        <div class="bg-white rounded-2xl overflow-hidden shadow-2xl card-hover scroll-animate border border-slate-50"
-                            style="animation-delay: 0.1s;">
-                            <div class="h-56 relative">
-                                <img src="https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=400"
-                                    alt="NEET Physics" class="w-full h-full object-cover">
-                            </div>
-                            <div class="p-10">
-                                <h4 class="text-2xl font-black text-[#0c213d] mb-4">NEET Physics</h4>
-                                <p class="text-sm text-gray-500 mb-6">Master Mechanics, Optics & Modern Physics with
-                                    shortcut tricks.</p>
-                                <div class="flex items-center justify-between pt-6 border-t border-slate-100">
-                                    <div class="flex flex-col"><span
-                                            class="text-3xl font-black text-[#f7941d]">₹6,499</span><span
-                                            class="text-gray-400 line-through text-xs font-bold">₹9,999</span></div>
-                                    <input type="checkbox"
-                                        class="subject-select w-8 h-8 text-[#f7941d] rounded-2xl border-2 border-slate-200 focus:ring-[#f7941d]"
-                                        data-subject="NEET Physics" data-class="NEET" data-board="NEET"
-                                        data-price="6499">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Chemistry NEET -->
-                        <div class="bg-white rounded-2xl overflow-hidden shadow-2xl card-hover scroll-animate border border-slate-50"
-                            style="animation-delay: 0.2s;">
-                            <div class="h-56 relative">
-                                <img src="https://images.unsplash.com/photo-1603126857599-f6e157fa2fe6?w=400"
-                                    alt="NEET Chemistry" class="w-full h-full object-cover">
-                            </div>
-                            <div class="p-10">
-                                <h4 class="text-2xl font-black text-[#0c213d] mb-4">NEET Chemistry</h4>
-                                <p class="text-sm text-gray-500 mb-6">Organic, Inorganic and Physical Chemistry with
-                                    direct reaction mechanisms.</p>
-                                <div class="flex items-center justify-between pt-6 border-t border-slate-100">
-                                    <div class="flex flex-col"><span
-                                            class="text-3xl font-black text-[#f7941d]">₹6,499</span><span
-                                            class="text-gray-400 line-through text-xs font-bold">₹9,999</span></div>
-                                    <input type="checkbox"
-                                        class="subject-select w-8 h-8 text-[#f7941d] rounded-2xl border-2 border-slate-200 focus:ring-[#f7941d]"
-                                        data-subject="NEET Chemistry" data-class="NEET" data-board="NEET"
-                                        data-price="6499">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
 
 
@@ -1344,9 +1112,9 @@
                 <a href="login.html"
                     class="bg-white text-[#0c213d] px-8 py-4 rounded-2xl font-bold hover:bg-slate-100 transition-all">Go
                     to Student Portal</a>
-                <button onclick="location.reload()"
-                    class="bg-transparent border-2 border-white/20 px-8 py-4 rounded-2xl font-bold hover:bg-white/5 transition-all">Explore
-                    More Courses</button>
+                <button onclick="window.location.href='live_classes.html'"
+                    class="bg-transparent border-2 border-white/20 px-8 py-4 rounded-2xl font-bold hover:bg-white/5 transition-all">Back
+                    to Home</button>
             </div>
         </div>
     </div>
@@ -1412,25 +1180,13 @@
                     <h4 class="text-lg font-bold mb-4">Quick Links</h4>
                     <ul class="space-y-2">
                         <li><a href="#home" class="text-gray-400 hover:text-white transition">Home</a></li>
-                        <li><a href="#courses" class="text-gray-400 hover:text-white transition">Courses</a></li>
                         <li><a href="#features" class="text-gray-400 hover:text-white transition">Features</a></li>
                         <li><a href="#about" class="text-gray-400 hover:text-white transition">About</a></li>
                         <li><a href="register.html" class="text-gray-400 hover:text-white transition">Register Now</a>
                         </li>
                     </ul>
                 </div>
-                <div>
-                    <h4 class="text-lg font-bold mb-4">Programs</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#courses" onclick="switchBoard('neet')"
-                                class="text-gray-400 hover:text-[#f7941d] transition">NEET Preparation</a></li>
-                        <li><a href="#courses" onclick="switchBoard('igcse')"
-                                class="text-gray-400 hover:text-[#f7941d] transition">IGCSE & A-Level</a></li>
-                        <li><a href="#courses" class="text-gray-400 hover:text-white transition">Bridge Courses</a></li>
-                        <li><a href="#courses" class="text-gray-400 hover:text-white transition">Foundation Classes</a>
-                        </li>
-                    </ul>
-                </div>
+
                 <div>
                     <h4 class="text-lg font-bold mb-4">Contact Info</h4>
                     <ul class="space-y-3 text-gray-400 text-sm">
@@ -1462,11 +1218,59 @@
     </footer>
 
     <!-- Chat Button -->
-    <button id="chatButton"
-        class="fixed bottom-8 right-8 bg-gradient-to-r from-navy-900 to-orange-500 text-white w-12 h-12 rounded-full shadow-lg hover:shadow-xl transition transform hover:scale-110 z-50 flex items-center justify-center"
-        style="background: linear-gradient(135deg, #0c213d, #f7941d);">
-        <i class="fas fa-comment-dots text-lg"></i>
-    </button>
+    <!-- Cookie Consent Disclaimer -->
+    <div id="cookieBanner"
+        class="fixed bottom-0 left-0 right-0 z-[1000] p-4 transform translate-y-full transition-transform duration-500">
+        <div
+            class="max-w-7xl mx-auto bg-[#0c213d]/95 backdrop-blur-lg border border-white/10 p-6 rounded-3xl shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-4">
+                <div
+                    class="w-12 h-12 bg-orange-500/20 rounded-2xl flex items-center justify-center text-orange-400 flex-shrink-0">
+                    <i class="fas fa-cookie-bite text-2xl"></i>
+                </div>
+                <div>
+                    <h5 class="text-white font-bold text-sm">We value your privacy</h5>
+                    <p class="text-gray-400 text-xs mt-1">We use cookies to enhance your experience, analyze site
+                        traffic, and serve personalized content. By clicking "Accept All", you consent to our use of
+                        cookies.</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3 w-full md:w-auto">
+                <button onclick="acceptCookies()"
+                    class="flex-1 md:flex-none bg-[#f7941d] text-white px-8 py-3 rounded-xl font-bold text-sm hover:shadow-xl hover:shadow-orange-500/20 transition-all whitespace-nowrap">
+                    Accept All
+                </button>
+                <button onclick="hideCookieBanner()"
+                    class="flex-1 md:flex-none bg-white/5 text-gray-400 px-6 py-3 rounded-xl font-bold text-sm hover:bg-white/10 transition-all">
+                    Dismiss
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Cookie Banner Logic
+        function showCookieBanner() {
+            if (!localStorage.getItem('cookiesAccepted')) {
+                setTimeout(() => {
+                    document.getElementById('cookieBanner').classList.remove('translate-y-full');
+                }, 2000);
+            }
+        }
+
+        function acceptCookies() {
+            localStorage.setItem('cookiesAccepted', 'true');
+            hideCookieBanner();
+            showToast('Thank you for accepting cookies!', 'success');
+        }
+
+        function hideCookieBanner() {
+            document.getElementById('cookieBanner').classList.add('translate-y-full');
+        }
+
+        document.addEventListener('DOMContentLoaded', showCookieBanner);
+    </script>
+
 
     <script>
         // Use relative URL if served from same origin, otherwise use absolute
@@ -1701,30 +1505,8 @@
 
         // Open Enroll Form
         function openEnrollForm() {
-            if (selectedSubjects.length === 0) {
-                showToast('Please select at least one course first!', 'warning');
-                // Scroll to courses section instead of doing nothing
-                const coursesSection = document.getElementById('courses');
-                if (coursesSection) {
-                    coursesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-                return;
-            }
-
-            showEnrollmentErrors([]);
-            const registerSection = document.getElementById('register');
-            registerSection.classList.remove('hidden');
-
-            // Reset verification state if opening new form
-            resetVerification();
-
-            // Pre-fill if logged in
-            preFillStudentData();
-
-            // Smooth scroll to form
-            setTimeout(() => {
-                registerSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 50);
+            window.location.href = 'register.html';
+            return;
         }
 
         async function preFillStudentData() {
@@ -1815,9 +1597,7 @@
             const registerSection = document.getElementById('register');
             registerSection.classList.add('hidden');
             showEnrollmentErrors([]);
-
-            // Scroll back to courses
-            document.getElementById('courses').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         // Smooth Scrolling
